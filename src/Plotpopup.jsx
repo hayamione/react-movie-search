@@ -9,7 +9,10 @@ const Plotpopup = ({ show, onHide, plot, img }) => {
         onHide={onHide}
         aria-labelledby="contained-modal-title-vcenter"
         centered
-        className="modal show plot-popup"
+        size="md"
+        className={`modal show plot-popup ${
+          show === "Plot" ? "" : "img-modal"
+        }`}
       >
         <Modal.Header closeButton>
           <Modal.Title>{show}</Modal.Title>

@@ -202,6 +202,9 @@ footer {
 .plot-popup {
   font-family: "Allerta Stencil", sans-serif;
 }
+.plot-popup.img-modal .modal-dialog {
+  margin: 10px auto;
+}
 .plot-popup .modal-header {
   border-bottom: 0;
   padding-bottom: 0;
@@ -235,11 +238,19 @@ footer {
   justify-content: center;
   align-items: center;
 }
+.plot-popup.img-modal .modal-body {
+  max-height: fit-content;
+}
 .plot-popup .modal-body p {
   color: #000;
 }
 .plot-popup .modal-body img {
   max-height: 500px;
+  width: auto;
+  object-fit: cover;
+  border-radius: 0.3rem;
+  max-height: 580px;
+  height: 100vh;
   width: auto;
   object-fit: cover;
   border-radius: 0.3rem;
@@ -270,5 +281,12 @@ body::-webkit-scrollbar-track {
   .img {
     max-height: 400px;
     width: auto;
+  }
+  .plot-popup .modal-body img {
+    max-height: 500px;
+  }
+  .plot-popup .modal-content {
+    width: 90%;
+    margin: auto;
   }
 }
