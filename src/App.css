@@ -1,5 +1,7 @@
+@import url("https://fonts.googleapis.com/css2?family=Allerta+Stencil&display=swap");
 .App {
   text-align: center;
+  font-family: "Allerta Stencil", sans-serif;
 }
 
 .App-logo {
@@ -39,27 +41,47 @@
 
 /* Custom CSS */
 
-p, h4 {
+p,
+h4 {
   margin: 5px 2px !important;
 }
 .container {
-  width:100%;
-  text-align:center;
+  width: 100%;
+  text-align: center;
   /* background: #ededed; */
   /* margin-left:15%; */
   /* padding: 20px; */
-
 }
 .padd {
-  padding:20px 30px;
+  padding: 20px 0 0;
+  min-height: calc(100vh - 34px);
+  position: relative;
+}
+.padd h1 {
+  margin-bottom: 30px;
+  font-size: 2rem;
 }
 .search {
-  display:flex;
+  display: flex;
+}
+.not-found {
+  min-height: calc(100vh - 162px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-direction: column;
+  font-size: 25px;
+  font-weight: bold;
+  color: #546d79;
+}
+.not-found img {
+  width: 100px;
 }
 .inp {
-  height:40px;
-  width:90%;
-  border-radius:20px;
+  height: 40px;
+  width: 90%;
+  border-radius: 20px;
   font-size: 18px;
   border: 1px solid #ededed;
   text-indent: 20px;
@@ -68,51 +90,121 @@ p, h4 {
 .btn {
   font-size: 18px;
   text-transform: uppercase;
-  width:200px;
-  height:40px;
-  margin-left:10px;
-  background-color:#638ce6;
-  color:#fff;
-  border-color:#638ce6;
-  border-radius:20px;
+  width: 200px;
+  height: 40px;
+  margin-left: 10px;
+  background-color: #638ce6;
+  color: #fff;
+  border-color: #638ce6;
+  border-radius: 20px;
+  outline: 0 !important;
+  box-shadow: none !important;
+}
+.btn:hover {
+  background-color: #2c65e2;
+  border-color: #2c65e2;
+  cursor: pointer;
 }
 .movie {
-  padding: 5px;
-  margin-top:5%;
-  display:flex;
-  border-radius:10px;
+  margin-top: 5%;
+  display: flex;
+  border-radius: 10px;
+  align-items: center;
+  gap: 2%;
 }
 .poster {
-  padding:0px 5px;
-  width:30%;
+  padding: 0px 5px;
+  width: 30%;
   height: auto;
   overflow: hidden;
 }
 .img {
-  width:100%;
-  border-radius:10px;
+  width: 100%;
+  border-radius: 10px;
+  height: 100%;
+  object-fit: cover;
 }
 
 .details {
-  width:70%;
-  margin-left:10px;
-  height:inherit;
-  border-radius:10px;
-  background:#ededed;
-  text-align:left;
+  width: 68%;
+  height: inherit;
+  border-radius: 10px;
+  background: #ededed;
+  text-align: left;
+  padding: 20px;
+}
+.details h2 {
+  font-size: 25px;
+  font-weight: 700;
 }
 
 .rating {
-  display:flex;
-  margin-right : 20px;
+  display: flex;
+  margin-right: 20px;
 }
 
-.rating>div {
-  margin-right : 20px;
+.rating > div {
+  margin-right: 20px;
 }
 
 footer {
-  text-align:right;
-  padding-right:50px;
+  text-align: right;
   font-weight: 500;
+  padding: 5px 0;
+}
+.more {
+  color: #638ce6;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.more:hover {
+  color: #2c65e2;
+  cursor: pointer;
+}
+
+/* Popup */
+.plot-popup {
+  font-family: "Allerta Stencil", sans-serif;
+}
+.plot-popup .modal-header {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+.plot-popup .modal-header .modal-title {
+  text-align: center;
+  margin: auto;
+  color: #000;
+}
+.plot-popup .btn-close {
+  color: #638ce6;
+  border-color: #638ce6 !important;
+  border-radius: 3px;
+}
+.plot-popup .btn-close:hover {
+  color: #2c65e2;
+  border-color: #2c65e2 !important;
+}
+.plot-popup .btn-close:before {
+  content: "\f00d";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+}
+.plot-popup .modal-body p {
+  color: #000;
+}
+
+@media (max-width: 576px) {
+  .movie {
+    flex-direction: column;
+    gap: 20px;
+  }
+  .poster,
+  .details {
+    width: 100%;
+  }
+  .img {
+    max-height: 400px;
+    width: auto;
+  }
 }
