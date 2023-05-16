@@ -3,6 +3,7 @@
 # Getting Started with Create React App
 
 Simple single web page application made with [Create React App](https://github.com/facebook/create-react-app) to experiment with React-based implementation.
+
 ## Screenshots
 
 These are the screenshots:
@@ -11,9 +12,10 @@ These are the screenshots:
 
 This application relies on external API service OMDB API to get films information.
 
-## To Do
+## View Site
 
-Mobile Responsive
+[https://hayamione.github.io/react-movie-search]
+
 <!-- ## Available Scripts
 
 In the project directory, you can run:
