@@ -79,6 +79,11 @@ h4 {
 .not-found img {
   width: 100px;
 }
+.loading img {
+  width: 100%;
+  max-height: 500px;
+  object-fit: cover;
+}
 .inp {
   height: 40px;
   width: 90%;

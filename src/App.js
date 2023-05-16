@@ -4,11 +4,13 @@ import { Button } from "react-bootstrap";
 import Plotpopup from "./Plotpopup";
 import notfound from "./img/not-found.png";
 import posternotfound from "./img/poster-not-found.png";
+import loadingImg from "./img/loading.gif";
 
 function App() {
   let [movieinfo, setMovieinfo] = useState(null);
   let [title, setTitle] = useState("harry potter");
   let [popup, setPopup] = useState("");
+  let [loading, setLoading] = useState("");
 
   useEffect(() => {
     getmoviedata();
@@ -21,11 +23,12 @@ function App() {
 
   function getmoviedata() {
     let url = `https://omdbapi.com/?t=${title}&plot=full&apikey=4926feba`;
-
+    setLoading(true);
     fetch(url)
       .then((response) => response.json())
       .then((movie) => {
         setMovieinfo(movie);
+        setLoading(false);
         console.log(movie);
         console.log("this is title: ", title);
       })
@@ -54,7 +57,11 @@ function App() {
               </Button>
             </div>
 
-            {movieinfo?.Error === undefined ? (
+            {loading ? (
+              <div className="not-found loading">
+                <img src={loadingImg} alt="loading" />
+              </div>
+            ) : movieinfo?.Error === undefined ? (
               <div class="movie">
                 <div class="poster">
                   <img
