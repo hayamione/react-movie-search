@@ -3,11 +3,12 @@ import "./App.css";
 import { Button } from "react-bootstrap";
 import Plotpopup from "./Plotpopup";
 import notfound from "./img/not-found.png";
+import posternotfound from "./img/poster-not-found.png";
 
 function App() {
   let [movieinfo, setMovieinfo] = useState(null);
   let [title, setTitle] = useState("harry potter");
-  let [plotpopup, setPlotpopup] = useState(false);
+  let [popup, setPopup] = useState("");
 
   useEffect(() => {
     getmoviedata();
@@ -56,7 +57,18 @@ function App() {
             {movieinfo?.Error === undefined ? (
               <div class="movie">
                 <div class="poster">
-                  <img src={movieinfo?.Poster} alt="Poster" className="img" />
+                  <img
+                    src={
+                      movieinfo?.Poster !== "N/A"
+                        ? movieinfo?.Poster
+                        : posternotfound
+                    }
+                    alt="Poster"
+                    className="img"
+                  />
+                  <Button className="btn" onClick={() => setPopup("Poster")}>
+                    View Poster
+                  </Button>
                 </div>
                 <div class="details">
                   <div className="">
@@ -65,8 +77,8 @@ function App() {
                       <strong>Genre :</strong> {movieinfo?.Genre}
                     </p>
                     <p>
-                      <strong>Plot :</strong> {movieinfo?.Plot.slice(0, 260)}{" "}
-                      <span className="more" onClick={() => setPlotpopup(true)}>
+                      <strong>Plot :</strong> {movieinfo?.Plot.slice(0, 200)}{" "}
+                      <span className="more" onClick={() => setPopup("Plot")}>
                         more...
                       </span>
                     </p>
@@ -133,25 +145,12 @@ function App() {
             <strong>Developed and Designed By : </strong>Haya Zubair
           </footer>
         </div>
-        {/*<header className="App-header">
-         <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header> */}
       </div>
       <Plotpopup
-        show={plotpopup}
-        onHide={() => setPlotpopup(false)}
+        show={popup}
+        onHide={() => setPopup(false)}
         plot={movieinfo?.Plot}
+        img={movieinfo?.Poster !== "N/A" ? movieinfo?.Poster : posternotfound}
       />
     </>
   );

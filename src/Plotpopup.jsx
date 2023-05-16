@@ -1,7 +1,7 @@
 import React from "react";
 import Modal from "react-bootstrap/Modal";
 
-const Plotpopup = ({ show, onHide, plot }) => {
+const Plotpopup = ({ show, onHide, plot, img }) => {
   return (
     <>
       <Modal
@@ -12,10 +12,10 @@ const Plotpopup = ({ show, onHide, plot }) => {
         className="modal show plot-popup"
       >
         <Modal.Header closeButton>
-          <Modal.Title>Plot</Modal.Title>
+          <Modal.Title>{show}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p>{plot}</p>
+          {show === "Plot" ? <p>{plot}</p> : <img src={img} alt="poster" />}
         </Modal.Body>
       </Modal>
     </>
