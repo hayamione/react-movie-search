@@ -241,6 +241,7 @@ footer {
 .plot-popup .modal-body img {
   max-height: 500px;
   width: auto;
+  max-width: 100%;
   object-fit: cover;
   border-radius: 0.3rem;
 }
