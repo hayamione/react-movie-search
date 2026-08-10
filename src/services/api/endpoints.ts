@@ -14,6 +14,9 @@ export const ENDPOINTS = {
   genre: {
     list: () => '/genre/movie/list',
   },
+  discover: {
+    movie: () => '/discover/movie',
+  },
   search: {
     movie: () => '/search/movie',
     person: () => '/search/person',

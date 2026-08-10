@@ -210,7 +210,7 @@ const HomePage = () => {
         ) : (
           <div className="flex flex-wrap gap-2">
             {genres.map((genre) => (
-              <GenreChip key={genre.id} label={genre.name} />
+              <GenreChip key={genre.id} label={genre.name} href={`/genre/${genre.id}`} />
             ))}
           </div>
         )}

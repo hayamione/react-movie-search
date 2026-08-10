@@ -2,6 +2,7 @@ interface GenreChipProps {
   label: string;
   active?: boolean;
   onClick?: () => void;
+  href?: string;
   className?: string;
 }
 
@@ -12,10 +13,18 @@ const activeStyles = 'bg-accent text-slate-950 hover:bg-accent-400';
 const interactiveStyles =
   'cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950';
 
-const GenreChip = ({ label, active = false, onClick, className = '' }: GenreChipProps) => {
+const GenreChip = ({ label, active = false, onClick, href, className = '' }: GenreChipProps) => {
   const chipStyles = `${baseChipStyles} ${active ? activeStyles : inactiveStyles} ${
-    onClick ? interactiveStyles : ''
+    onClick || href ? interactiveStyles : ''
   } ${className}`;
+
+  if (href) {
+    return (
+      <a href={href} aria-current={active ? 'page' : undefined} className={chipStyles}>
+        {label}
+      </a>
+    );
+  }
 
   if (onClick) {
     return (

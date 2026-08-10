@@ -51,6 +51,45 @@ export async function getRecommendedMovies(
   return data.results.map((movie) => mapApiMovie(movie));
 }
 
+export type DiscoverSortBy = 'popularity' | 'vote_average' | 'release_date';
+
+const DISCOVER_SORT: Record<DiscoverSortBy, string> = {
+  popularity: 'popularity.desc',
+  vote_average: 'vote_average.desc',
+  release_date: 'primary_release_date.desc',
+};
+
+export interface DiscoverMoviesOptions {
+  sortBy?: DiscoverSortBy;
+  page?: number;
+  minVoteCount?: number;
+  signal?: AbortSignal;
+}
+
+export async function discoverMovies(
+  genreId: number,
+  options: DiscoverMoviesOptions = {}
+): Promise<Movie[]> {
+  const { sortBy = 'popularity', page = 1, minVoteCount, signal } = options;
+
+  const params: Record<string, string | number | boolean | undefined> = {
+    with_genres: genreId,
+    sort_by: DISCOVER_SORT[sortBy],
+  };
+  if (page > 1) {
+    params.page = page;
+  }
+  if (minVoteCount !== undefined) {
+    params['vote_count.gte'] = minVoteCount;
+  }
+
+  const data = await request<ApiPaginatedResult<ApiMovie>>(ENDPOINTS.discover.movie(), {
+    params,
+    signal,
+  });
+  return data.results.map((movie) => mapApiMovie(movie));
+}
+
 export async function getPopularMovies(signal?: AbortSignal): Promise<Movie[]> {
   const data = await request<ApiPaginatedResult<ApiMovie>>(ENDPOINTS.movie.popular(), {
     signal,

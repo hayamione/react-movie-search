@@ -1,3 +1,5 @@
+import GenrePage from './pages/GenrePage';
+import GenresPage from './pages/GenresPage';
 import HomePage from './pages/HomePage';
 import SearchPage from './pages/SearchPage';
 
@@ -10,6 +12,15 @@ const getRoute = () => {
 
 const App = () => {
   const route = getRoute();
+
+  if (route === '/genres' || route.startsWith('/genres/')) {
+    return <GenresPage />;
+  }
+
+  const genreMatch = route.match(/^\/genre\/(\d+)\/?$/);
+  if (genreMatch) {
+    return <GenrePage genreId={Number(genreMatch[1])} />;
+  }
 
   if (route === '/search' || route.startsWith('/search/')) {
     return <SearchPage />;
