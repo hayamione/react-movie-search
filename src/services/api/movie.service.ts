@@ -40,6 +40,17 @@ export async function getMovieDetails(
   return mapApiMovie(data);
 }
 
+export async function getRecommendedMovies(
+  id: number,
+  signal?: AbortSignal
+): Promise<Movie[]> {
+  const data = await request<ApiPaginatedResult<ApiMovie>>(
+    ENDPOINTS.movie.recommendations(id),
+    { signal }
+  );
+  return data.results.map((movie) => mapApiMovie(movie));
+}
+
 export async function getPopularMovies(signal?: AbortSignal): Promise<Movie[]> {
   const data = await request<ApiPaginatedResult<ApiMovie>>(ENDPOINTS.movie.popular(), {
     signal,

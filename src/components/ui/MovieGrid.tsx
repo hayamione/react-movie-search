@@ -1,6 +1,6 @@
 import type { PropsWithChildren } from 'react';
 
-type GridColumns = 2 | 3 | 4 | 5 | 6;
+export type GridColumns = 2 | 3 | 4 | 5 | 6;
 type GridGap = 'sm' | 'md' | 'lg';
 
 interface MovieGridProps extends PropsWithChildren {

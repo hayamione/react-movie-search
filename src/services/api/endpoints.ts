@@ -6,6 +6,7 @@ export const ENDPOINTS = {
     nowPlaying: () => '/movie/now_playing',
     detail: (id: number | string) => `/movie/${id}`,
     credits: (id: number | string) => `/movie/${id}/credits`,
+    recommendations: (id: number | string) => `/movie/${id}/recommendations`,
   },
   trending: {
     movies: (timeWindow: 'day' | 'week' = 'week') => `/trending/movie/${timeWindow}`,

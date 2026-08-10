@@ -1,15 +1,13 @@
 import type { Movie } from '../types/movie';
-import MovieCard from '../components/MovieCard';
 import Button from '../components/ui/Button';
 import EmptyState from '../components/ui/EmptyState';
 import ErrorState from '../components/ui/ErrorState';
 import GenreChip from '../components/ui/GenreChip';
-import MovieGrid from '../components/ui/MovieGrid';
+import MovieSection from '../components/ui/MovieSection';
 import Poster from '../components/ui/Poster';
 import RatingBadge from '../components/ui/RatingBadge';
 import SearchBar from '../components/ui/SearchBar';
 import Section from '../components/ui/Section';
-import SectionSkeleton from '../components/ui/SectionSkeleton';
 import { useGenres } from '../hooks/useGenres';
 import {
   usePopularMovies,
@@ -17,73 +15,6 @@ import {
   useTrendingMovies,
   useUpcomingMovies,
 } from '../hooks/useMovies';
-
-interface MovieSectionProps {
-  title: string;
-  subtitle?: string;
-  movies: Movie[];
-  loading: boolean;
-  error: Error | null;
-  onRetry: () => void;
-  horizontal?: boolean;
-  cards?: number;
-}
-
-const MovieSection = ({
-  title,
-  subtitle,
-  movies,
-  loading,
-  error,
-  onRetry,
-  horizontal = false,
-  cards = 5,
-}: MovieSectionProps) => {
-  if (loading) {
-    return (
-      <Section title={title} subtitle={subtitle}>
-        <SectionSkeleton showTitle={false} cards={cards} />
-      </Section>
-    );
-  }
-
-  if (error) {
-    return (
-      <Section title={title} subtitle={subtitle}>
-        <ErrorState onRetry={onRetry} description={`Unable to load ${title.toLowerCase()}.`} />
-      </Section>
-    );
-  }
-
-  if (movies.length === 0) {
-    return (
-      <Section title={title} subtitle={subtitle}>
-        <EmptyState
-          title="No movies found"
-          description={`We could not find any movies for ${title.toLowerCase()}.`}
-        />
-      </Section>
-    );
-  }
-
-  return (
-    <Section title={title} subtitle={subtitle}>
-      {horizontal ? (
-        <div className="-mx-4 flex gap-4 overflow-x-auto px-4 pb-2 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
-          {movies.map((movie) => (
-            <MovieCard key={movie.id} movie={movie} className="w-40 shrink-0 sm:w-48" />
-          ))}
-        </div>
-      ) : (
-        <MovieGrid columns={5}>
-          {movies.map((movie) => (
-            <MovieCard key={movie.id} movie={movie} />
-          ))}
-        </MovieGrid>
-      )}
-    </Section>
-  );
-};
 
 const HeroSkeleton = () => (
   <div

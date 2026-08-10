@@ -5,10 +5,12 @@ import Button from '../components/ui/Button';
 import EmptyState from '../components/ui/EmptyState';
 import ErrorState from '../components/ui/ErrorState';
 import GenreChip from '../components/ui/GenreChip';
+import MovieSection from '../components/ui/MovieSection';
 import Poster from '../components/ui/Poster';
 import RatingBadge from '../components/ui/RatingBadge';
 import Section from '../components/ui/Section';
 import { useMovieDetails } from '../hooks/useMovieDetails';
+import { useRecommendedMovies } from '../hooks/useRecommendedMovies';
 
 const formatRuntime = (runtime?: number) => {
   if (runtime === undefined || runtime <= 0) {
@@ -135,8 +137,25 @@ interface MovieDetailsPageProps {
   movieId?: EntityId;
 }
 
+const RecommendationsSection = ({ movieId }: { movieId?: EntityId }) => {
+  const { data: movies, loading, error, refetch } = useRecommendedMovies(movieId);
+
+  return (
+    <MovieSection
+      title="Recommendations"
+      subtitle="More movies you might enjoy."
+      movies={movies ?? []}
+      loading={loading}
+      error={error}
+      onRetry={refetch}
+      cards={6}
+      columns={4}
+    />
+  );
+};
+
 const MovieDetailsPage = ({ movieId }: MovieDetailsPageProps) => {
-  const { movie, loading, error, refetch } = useMovieDetails(movieId);
+  const { data: movie, loading, error, refetch } = useMovieDetails(movieId);
 
   if (loading) {
     return <MovieDetailsSkeleton />;
@@ -196,12 +215,7 @@ const MovieDetailsPage = ({ movieId }: MovieDetailsPageProps) => {
         />
       </Section>
 
-      <Section title="Recommendations" subtitle="More movies you might enjoy.">
-        <EmptyState
-          title="Recommendations coming soon"
-          description="Similar movies will appear here once movie data is available."
-        />
-      </Section>
+      <RecommendationsSection movieId={movieId} />
     </div>
   );
 };
