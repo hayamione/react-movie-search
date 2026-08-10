@@ -31,7 +31,7 @@ const Poster = ({
 
   return (
     <div
-      className={`relative aspect-[2/3] overflow-hidden rounded-xl bg-slate-900 transition-shadow duration-smooth hover:shadow-raised ${className}`}
+      className={`relative aspect-[2/3] overflow-hidden  bg-slate-900 transition-shadow duration-smooth hover:shadow-raised ${className}`}
     >
       {!loaded && (
         <div className="absolute inset-0 animate-pulse bg-slate-800" aria-hidden="true" />

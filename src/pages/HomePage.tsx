@@ -130,7 +130,7 @@ const HeroSection = ({ movie }: HeroSectionProps) => {
           <Poster
             src={movie.posterSrc}
             alt={movie.title}
-            className="w-36 shrink-0 self-center sm:w-44 lg:w-52 lg:self-auto"
+            className="w-36 shrink-0 self-center sm:w-44 lg:w-52 lg:self-auto rounded-xl"
           />
           <div className="flex flex-1 flex-col gap-4">
             <h1 className="text-balance text-3xl font-extrabold leading-tight tracking-tight text-slate-50 sm:text-4xl lg:text-5xl">
