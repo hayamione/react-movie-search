@@ -3,7 +3,7 @@ import '../App.css';
 import { Button } from 'react-bootstrap';
 import PlotPopup from '../components/PlotPopup';
 import { getMovieData } from '../services/movieService';
-import type { MovieInfo } from '../types/movie';
+import type { MovieInfo } from '../types/api';
 import notfound from '../assets/images/not-found.png';
 import posternotfound from '../assets/images/poster-not-found.png';
 import loadingImg from '../assets/images/loading.gif';

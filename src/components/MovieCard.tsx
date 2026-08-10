@@ -29,7 +29,7 @@ const MovieCard = ({ movie, onClick, className = '' }: MovieCardProps) => {
         {movie.genres && movie.genres.length > 0 && (
           <div className="mt-1 flex flex-wrap gap-2">
             {movie.genres.map((genre) => (
-              <GenreChip key={genre} label={genre} />
+              <GenreChip key={genre.id} label={genre.name} />
             ))}
           </div>
         )}

@@ -4,7 +4,7 @@ Simple single-page application for searching movie details using the OMDB API.
 
 ## Live Demo
 
-Main live URL: [https://hayamione.github.io/first-firebase-app](https://hayamione.github.io/first-firebase-app)
+Main live URL: [https://hayamione.github.io/react-movie-search](https://hayamione.github.io/react-movie-search)
 
 ## Local Development
 
