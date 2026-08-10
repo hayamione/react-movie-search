@@ -12,3 +12,8 @@ export interface Movie {
   overview?: string;
   tagline?: string;
 }
+
+export interface MovieDetails extends Movie {
+  originalTitle?: string;
+  runtime?: number;
+}
