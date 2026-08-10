@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import type { ChangeEvent, FormEvent } from 'react';
 
+type SearchBarSize = 'md' | 'lg';
+
 interface SearchBarProps {
   value?: string;
   defaultValue?: string;
@@ -9,13 +11,14 @@ interface SearchBarProps {
   onClear?: () => void;
   loading?: boolean;
   placeholder?: string;
+  size?: SearchBarSize;
   'aria-label'?: string;
   className?: string;
 }
 
-const SearchIcon = () => (
+const SearchIcon = ({ className = '' }: { className?: string }) => (
   <svg
-    className="h-5 w-5"
+    className={className}
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
@@ -29,9 +32,9 @@ const SearchIcon = () => (
   </svg>
 );
 
-const ClearIcon = () => (
+const ClearIcon = ({ className = '' }: { className?: string }) => (
   <svg
-    className="h-4 w-4"
+    className={className}
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
@@ -43,9 +46,9 @@ const ClearIcon = () => (
   </svg>
 );
 
-const Spinner = () => (
+const Spinner = ({ className = 'h-4 w-4' }: { className?: string }) => (
   <svg
-    className="h-4 w-4 animate-spin"
+    className={`animate-spin ${className}`}
     viewBox="0 0 24 24"
     fill="none"
     aria-hidden="true"
@@ -66,6 +69,23 @@ const Spinner = () => (
   </svg>
 );
 
+const sizeStyles = {
+  md: {
+    input: 'h-11 rounded-xl pl-11 pr-11 text-sm',
+    iconPosition: 'left-3.5',
+    iconSize: 'h-5 w-5',
+    clearButton: 'right-2.5 h-8 w-8',
+    spinner: 'h-4 w-4',
+  },
+  lg: {
+    input: 'h-14 rounded-2xl pl-12 pr-12 text-base sm:h-16',
+    iconPosition: 'left-4',
+    iconSize: 'h-5 w-5 sm:h-6 sm:w-6',
+    clearButton: 'right-3 h-9 w-9 sm:right-3.5',
+    spinner: 'h-5 w-5',
+  },
+} as const;
+
 const SearchBar = ({
   value,
   defaultValue = '',
@@ -74,12 +94,14 @@ const SearchBar = ({
   onClear,
   loading = false,
   placeholder = 'Search movies...',
+  size = 'md',
   'aria-label': ariaLabel = 'Search movies',
   className = '',
 }: SearchBarProps) => {
   const isControlled = value !== undefined;
   const [internalValue, setInternalValue] = useState(defaultValue);
   const currentValue = isControlled ? (value ?? '') : internalValue;
+  const styles = sizeStyles[size];
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (!isControlled) {
@@ -103,8 +125,10 @@ const SearchBar = ({
 
   return (
     <form role="search" onSubmit={handleSubmit} className={`relative w-full ${className}`}>
-      <span className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
-        <SearchIcon />
+      <span
+        className={`pointer-events-none absolute top-1/2 -translate-y-1/2 text-slate-400 ${styles.iconPosition}`}
+      >
+        <SearchIcon className={styles.iconSize} />
       </span>
       <input
         type="search"
@@ -114,20 +138,20 @@ const SearchBar = ({
         aria-label={ariaLabel}
         enterKeyHint="search"
         spellCheck={false}
-        className="h-11 w-full rounded-xl border border-slate-700 bg-slate-900 pl-11 pr-11 text-sm text-slate-100 shadow-soft transition-all duration-fast placeholder:text-slate-500 focus:border-accent focus:ring-2 focus:ring-accent/30 focus-visible:outline-none [&::-webkit-search-cancel-button]:hidden"
+        className={`w-full border border-slate-700 bg-slate-900 text-slate-100 shadow-soft transition-all duration-fast placeholder:text-slate-500 focus:border-accent focus:ring-2 focus:ring-accent/30 focus-visible:outline-none [&::-webkit-search-cancel-button]:hidden ${styles.input}`}
       />
       {loading ? (
-        <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400">
-          <Spinner />
+        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400">
+          <Spinner className={styles.spinner} />
         </span>
       ) : currentValue ? (
         <button
           type="button"
           onClick={handleClear}
           aria-label="Clear search"
-          className="absolute right-2.5 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-xl text-slate-400 transition-colors duration-fast hover:bg-slate-800 hover:text-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+          className={`absolute top-1/2 flex -translate-y-1/2 items-center justify-center rounded-xl text-slate-400 transition-colors duration-fast hover:bg-slate-800 hover:text-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${styles.clearButton}`}
         >
-          <ClearIcon />
+          <ClearIcon className="h-4 w-4" />
         </button>
       ) : null}
     </form>

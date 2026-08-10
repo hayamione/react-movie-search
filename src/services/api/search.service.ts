@@ -19,12 +19,49 @@ function mapApiPerson(person: ApiPerson): Person {
   };
 }
 
-export async function searchMovies(query: string, signal?: AbortSignal): Promise<Movie[]> {
+export interface SearchMoviesOptions {
+  page?: number;
+  year?: number;
+  genreId?: number;
+  signal?: AbortSignal;
+}
+
+export interface SearchMoviesResult {
+  movies: Movie[];
+  page: number;
+  totalPages: number;
+  totalResults: number;
+}
+
+export async function searchMovies(
+  query: string,
+  options: SearchMoviesOptions = {}
+): Promise<SearchMoviesResult> {
+  const { page = 1, year, genreId, signal } = options;
+
+  const params: Record<string, string | number | boolean | undefined> = { query };
+  if (page > 1) {
+    params.page = page;
+  }
+  if (year) {
+    params.year = year;
+  }
+
   const data = await request<ApiPaginatedResult<ApiMovie>>(ENDPOINTS.search.movie(), {
-    params: { query },
+    params,
     signal,
   });
-  return data.results.map((movie) => mapApiMovie(movie));
+
+  const filtered = genreId
+    ? data.results.filter((movie) => movie.genre_ids?.includes(genreId))
+    : data.results;
+
+  return {
+    movies: filtered.map((movie) => mapApiMovie(movie)),
+    page: data.page,
+    totalPages: data.total_pages,
+    totalResults: data.total_results,
+  };
 }
 
 export async function searchPeople(query: string, signal?: AbortSignal): Promise<Person[]> {

@@ -34,7 +34,7 @@ const Poster = ({
       className={`relative aspect-[2/3] overflow-hidden  bg-slate-900 transition-shadow duration-smooth hover:shadow-raised ${className}`}
     >
       {!loaded && (
-        <div className="absolute inset-0 animate-pulse bg-slate-800" aria-hidden="true" />
+        <div className="absolute inset-0 opacity-5 bg-slate-800" aria-hidden="true" />
       )}
       <img
         src={currentSrc}
