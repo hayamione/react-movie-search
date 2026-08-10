@@ -7,6 +7,9 @@ export const ENDPOINTS = {
     detail: (id: number | string) => `/movie/${id}`,
     credits: (id: number | string) => `/movie/${id}/credits`,
   },
+  trending: {
+    movies: (timeWindow: 'day' | 'week' = 'week') => `/trending/movie/${timeWindow}`,
+  },
   genre: {
     list: () => '/genre/movie/list',
   },

@@ -48,3 +48,10 @@ export async function getNowPlayingMovies(signal?: AbortSignal): Promise<Movie[]
   });
   return data.results.map((movie) => mapApiMovie(movie));
 }
+
+export async function getTrendingMovies(signal?: AbortSignal): Promise<Movie[]> {
+  const data = await request<ApiPaginatedResult<ApiMovie>>(ENDPOINTS.trending.movies(), {
+    signal,
+  });
+  return data.results.map((movie) => mapApiMovie(movie));
+}
