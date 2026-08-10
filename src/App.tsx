@@ -2,6 +2,7 @@ import GenrePage from './pages/GenrePage';
 import GenresPage from './pages/GenresPage';
 import HomePage from './pages/HomePage';
 import SearchPage from './pages/SearchPage';
+import TrendingPage from './pages/TrendingPage';
 
 const getRoute = () => {
   const base = import.meta.env.BASE_URL;
@@ -20,6 +21,10 @@ const App = () => {
   const genreMatch = route.match(/^\/genre\/(\d+)\/?$/);
   if (genreMatch) {
     return <GenrePage genreId={Number(genreMatch[1])} />;
+  }
+
+  if (route === '/trending' || route.startsWith('/trending/')) {
+    return <TrendingPage />;
   }
 
   if (route === '/search' || route.startsWith('/search/')) {
