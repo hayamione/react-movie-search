@@ -2,6 +2,7 @@ import GenrePage from './pages/GenrePage';
 import GenresPage from './pages/GenresPage';
 import HomePage from './pages/HomePage';
 import SearchPage from './pages/SearchPage';
+import TopRatedPage from './pages/TopRatedPage';
 import TrendingPage from './pages/TrendingPage';
 
 const getRoute = () => {
@@ -21,6 +22,10 @@ const App = () => {
   const genreMatch = route.match(/^\/genre\/(\d+)\/?$/);
   if (genreMatch) {
     return <GenrePage genreId={Number(genreMatch[1])} />;
+  }
+
+  if (route === '/top-rated' || route.startsWith('/top-rated/')) {
+    return <TopRatedPage />;
   }
 
   if (route === '/trending' || route.startsWith('/trending/')) {
