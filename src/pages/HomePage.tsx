@@ -2,33 +2,11 @@ import { useState, useEffect, ChangeEvent } from 'react';
 import '../App.css';
 import { Button } from 'react-bootstrap';
 import PlotPopup from '../components/PlotPopup';
+import { getMovieData } from '../services/movieService';
+import type { MovieInfo } from '../types/movie';
 import notfound from '../assets/images/not-found.png';
 import posternotfound from '../assets/images/poster-not-found.png';
 import loadingImg from '../assets/images/loading.gif';
-
-interface Rating {
-  Source: string;
-  Value: string;
-}
-
-interface MovieInfo {
-  Error?: string;
-  Poster?: string;
-  Title?: string;
-  Genre?: string;
-  Plot?: string;
-  Actors?: string;
-  Director?: string;
-  Writer?: string;
-  BoxOffice?: string;
-  Released?: string;
-  Runtime?: string;
-  Language?: string;
-  Country?: string;
-  Awards?: string;
-  Production?: string;
-  Ratings?: Rating[];
-}
 
 type PopupState = 'Plot' | 'Poster' | false;
 
@@ -39,7 +17,7 @@ function App() {
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    getmoviedata();
+    void getmoviedata();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -47,20 +25,19 @@ function App() {
     setTitle(value);
   }
 
-  function getmoviedata() {
-    const url = `https://omdbapi.com/?t=${title}&plot=full&apikey=4926feba`;
+  async function getmoviedata() {
     setLoading(true);
-    fetch(url)
-      .then((response) => response.json())
-      .then((movie: MovieInfo) => {
-        setMovieinfo(movie);
-        setLoading(false);
-        console.log(movie);
-        console.log('this is title: ', title);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+
+    try {
+      const movie = await getMovieData(title);
+      setMovieinfo(movie);
+      console.log(movie);
+      console.log('this is title: ', title);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
