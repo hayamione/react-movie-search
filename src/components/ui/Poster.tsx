@@ -43,7 +43,7 @@ const Poster = ({
         decoding="async"
         onLoad={() => setLoaded(true)}
         onError={() => setErrored(true)}
-        className="h-full w-full object-cover transition-transform duration-smooth hover:scale-[1.02]"
+        className="h-full w-full object-cover transition-transform duration-smooth group-hover:scale-[1.02]"
         {...rest}
       />
     </div>
