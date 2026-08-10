@@ -1,13 +1,13 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
-import App from './App';
+import AppLayout from './layout/AppLayout';
 
 const rootElement = document.getElementById('root');
 if (rootElement) {
   createRoot(rootElement).render(
     <React.StrictMode>
-      <App />
+      <AppLayout />
     </React.StrictMode>
   );
 }
