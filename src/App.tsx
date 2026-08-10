@@ -1,36 +1,62 @@
-import { useState, useEffect } from "react";
-import "./App.css";
-import { Button } from "react-bootstrap";
-import Plotpopup from "./Plotpopup";
-import notfound from "./img/not-found.png";
-import posternotfound from "./img/poster-not-found.png";
-import loadingImg from "./img/loading.gif";
+import { useState, useEffect, ChangeEvent } from 'react';
+import './App.css';
+import { Button } from 'react-bootstrap';
+import Plotpopup from './Plotpopup';
+import notfound from './img/not-found.png';
+import posternotfound from './img/poster-not-found.png';
+import loadingImg from './img/loading.gif';
+
+interface Rating {
+  Source: string;
+  Value: string;
+}
+
+interface MovieInfo {
+  Error?: string;
+  Poster?: string;
+  Title?: string;
+  Genre?: string;
+  Plot?: string;
+  Actors?: string;
+  Director?: string;
+  Writer?: string;
+  BoxOffice?: string;
+  Released?: string;
+  Runtime?: string;
+  Language?: string;
+  Country?: string;
+  Awards?: string;
+  Production?: string;
+  Ratings?: Rating[];
+}
+
+type PopupState = 'Plot' | 'Poster' | false;
 
 function App() {
-  let [movieinfo, setMovieinfo] = useState(null);
-  let [title, setTitle] = useState("harry potter");
-  let [popup, setPopup] = useState("");
-  let [loading, setLoading] = useState("");
+  const [movieinfo, setMovieinfo] = useState<MovieInfo | null>(null);
+  const [title, setTitle] = useState<string>('harry potter');
+  const [popup, setPopup] = useState<PopupState>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     getmoviedata();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function readTitle(value) {
+  function readTitle(value: string) {
     setTitle(value);
-    // console.log(value);
   }
 
   function getmoviedata() {
-    let url = `https://omdbapi.com/?t=${title}&plot=full&apikey=4926feba`;
+    const url = `https://omdbapi.com/?t=${title}&plot=full&apikey=4926feba`;
     setLoading(true);
     fetch(url)
       .then((response) => response.json())
-      .then((movie) => {
+      .then((movie: MovieInfo) => {
         setMovieinfo(movie);
         setLoading(false);
         console.log(movie);
-        console.log("this is title: ", title);
+        console.log('this is title: ', title);
       })
       .catch((err) => {
         console.log(err);
@@ -47,7 +73,7 @@ function App() {
               <input
                 type="text"
                 placeholder="Enter Movie Name"
-                onChange={(event) => {
+                onChange={(event: ChangeEvent<HTMLInputElement>) => {
                   readTitle(event.target.value);
                 }}
                 className="inp"
@@ -62,30 +88,31 @@ function App() {
                 <img src={loadingImg} alt="loading" />
               </div>
             ) : movieinfo?.Error === undefined ? (
-              <div class="movie">
-                <div class="poster">
+              <div className="movie">
+                <div className="poster">
                   <img
                     src={
-                      movieinfo?.Poster !== "N/A"
-                        ? movieinfo?.Poster
+                      movieinfo?.Poster && movieinfo.Poster !== 'N/A'
+                        ? movieinfo.Poster
                         : posternotfound
                     }
                     alt="Poster"
                     className="img"
                   />
-                  <Button className="btn" onClick={() => setPopup("Poster")}>
+                  <Button className="btn" onClick={() => setPopup('Poster')}>
                     View Poster
                   </Button>
                 </div>
-                <div class="details">
+                <div className="details">
                   <div className="">
                     <h2>{movieinfo?.Title}</h2>
                     <p>
                       <strong>Genre :</strong> {movieinfo?.Genre}
                     </p>
                     <p>
-                      <strong>Plot :</strong> {movieinfo?.Plot.slice(0, 200)}{" "}
-                      <span className="more" onClick={() => setPopup("Plot")}>
+                      <strong>Plot :</strong>{' '}
+                      {movieinfo?.Plot ? movieinfo.Plot.slice(0, 200) : ''}{' '}
+                      <span className="more" onClick={() => setPopup('Plot')}>
                         more...
                       </span>
                     </p>
@@ -124,7 +151,7 @@ function App() {
                     </p>
 
                     <div className="rating">
-                      {movieinfo?.Ratings.map((rating, index) => (
+                      {movieinfo?.Ratings?.map((rating, index) => (
                         <div key={index}>
                           <strong>{rating.Source}</strong>
                           <p>{rating.Value}</p>
@@ -138,12 +165,8 @@ function App() {
               <div className="not-found">
                 <img src={notfound} alt="not-found" />
                 Movie Not Found
-                <Button
-                  onClick={() => window.location.reload(true)}
-                  className="btn"
-                >
-                  {" "}
-                  Try Again{" "}
+                <Button onClick={() => window.location.reload()} className="btn">
+                  Try Again
                 </Button>
               </div>
             )}
@@ -157,7 +180,11 @@ function App() {
         show={popup}
         onHide={() => setPopup(false)}
         plot={movieinfo?.Plot}
-        img={movieinfo?.Poster !== "N/A" ? movieinfo?.Poster : posternotfound}
+        img={
+          movieinfo?.Poster && movieinfo.Poster !== 'N/A'
+            ? movieinfo.Poster
+            : posternotfound
+        }
       />
     </>
   );

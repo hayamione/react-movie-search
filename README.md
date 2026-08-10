@@ -1,20 +1,50 @@
-# This is my very first work with react
+# Movie Search App
 
-# Getting Started with Create React App
+Simple single-page application for searching movie details using the OMDB API.
 
-Simple single web page application made with [Create React App](https://github.com/facebook/create-react-app) to experiment with React-based implementation.
+## Live Demo
 
-## Screenshots
+Main live URL: [https://hayamione.github.io/first-firebase-app](https://hayamione.github.io/first-firebase-app)
 
-These are the screenshots:
+## Local Development
+
+Install dependencies once:
+
+```bash
+npm install
+```
+
+Start the Vite dev server:
+
+```bash
+npm run dev
+```
+
+## Build & Preview
+
+Build the production bundle:
+
+```bash
+npm run build
+```
+
+Preview the production build locally:
+
+```bash
+npm run preview
+```
+
+## Deployment
+
+Deploy the `dist` folder to GitHub Pages:
+
+```bash
+npm run deploy
+```
 
 ## API
 
-This application relies on external API service OMDB API to get films information.
-
-## View Site
-
-[https://hayamione.github.io/react-movie-search]
+This application relies on the OMDB API to fetch movie information.
 
 <!-- ## Available Scripts
 
