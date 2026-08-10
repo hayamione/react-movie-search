@@ -3,12 +3,14 @@ import type { EntityId, IsoDate } from './common';
 export interface ApiMovie {
   id: EntityId;
   title: string;
+  original_title?: string;
   poster_path?: string | null;
   backdrop_path?: string | null;
   release_date?: IsoDate;
   vote_average?: number;
   vote_count?: number;
   genre_ids?: EntityId[];
+  genres?: ApiGenre[];
   overview?: string;
   runtime?: number;
   tagline?: string;

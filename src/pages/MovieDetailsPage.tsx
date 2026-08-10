@@ -1,11 +1,14 @@
 import { Fragment } from 'react';
+import type { EntityId } from '../types/common';
 import type { MovieDetails } from '../types/movie';
 import Button from '../components/ui/Button';
 import EmptyState from '../components/ui/EmptyState';
+import ErrorState from '../components/ui/ErrorState';
 import GenreChip from '../components/ui/GenreChip';
 import Poster from '../components/ui/Poster';
 import RatingBadge from '../components/ui/RatingBadge';
 import Section from '../components/ui/Section';
+import { useMovieDetails } from '../hooks/useMovieDetails';
 
 const formatRuntime = (runtime?: number) => {
   if (runtime === undefined || runtime <= 0) {
@@ -109,56 +112,98 @@ const MovieDetailsHero = ({ movie }: MovieDetailsHeroProps) => {
   );
 };
 
-interface MovieDetailsPageProps {
-  movie: MovieDetails;
-}
-
-const MovieDetailsPage = ({ movie }: MovieDetailsPageProps) => (
-  <div className="flex flex-col gap-12 sm:gap-16">
-    <MovieDetailsHero movie={movie} />
-
-    <Section title="Cast" subtitle="The actors who brought this story to life.">
-      <EmptyState
-        title="Cast coming soon"
-        description="The full cast list will appear here once movie data is available."
-      />
-    </Section>
-
-    <Section title="Crew" subtitle="The people behind the scenes.">
-      <EmptyState
-        title="Crew coming soon"
-        description="The crew credits will appear here once movie data is available."
-      />
-    </Section>
-
-    <Section title="Trailer" subtitle="Watch the official trailer.">
-      <EmptyState
-        title="Trailer coming soon"
-        description="The official trailer will appear here once movie data is available."
-      />
-    </Section>
-
-    <Section title="Production Companies" subtitle="The studios behind the movie.">
-      <EmptyState
-        title="Production companies coming soon"
-        description="The production companies will appear here once movie data is available."
-      />
-    </Section>
-
-    <Section title="Spoken Languages" subtitle="Languages featured in the movie.">
-      <EmptyState
-        title="Spoken languages coming soon"
-        description="The spoken languages will appear here once movie data is available."
-      />
-    </Section>
-
-    <Section title="Recommendations" subtitle="More movies you might enjoy.">
-      <EmptyState
-        title="Recommendations coming soon"
-        description="Similar movies will appear here once movie data is available."
-      />
-    </Section>
+const MovieDetailsSkeleton = () => (
+  <div className="animate-pulse rounded-2xl bg-slate-900" aria-hidden="true">
+    <div className="flex flex-col gap-8 p-6 sm:p-8 lg:flex-row lg:gap-12 lg:p-12">
+      <div className="aspect-[2/3] w-36 shrink-0 self-center rounded-xl bg-slate-800 sm:w-44 lg:w-52 lg:self-auto" />
+      <div className="flex flex-1 flex-col gap-4">
+        <div className="h-10 w-2/3 rounded-xl bg-slate-800 sm:h-12" />
+        <div className="h-4 w-1/3 rounded-xl bg-slate-800" />
+        <div className="h-6 w-1/2 rounded-xl bg-slate-800" />
+        <div className="h-4 w-3/4 rounded-xl bg-slate-800" />
+        <div className="h-4 w-2/3 rounded-xl bg-slate-800" />
+        <div className="mt-2 flex flex-wrap gap-3">
+          <div className="h-12 w-32 rounded-xl bg-slate-800" />
+          <div className="h-12 w-40 rounded-xl bg-slate-800" />
+        </div>
+      </div>
+    </div>
   </div>
 );
+
+interface MovieDetailsPageProps {
+  movieId?: EntityId;
+}
+
+const MovieDetailsPage = ({ movieId }: MovieDetailsPageProps) => {
+  const { movie, loading, error, refetch } = useMovieDetails(movieId);
+
+  if (loading) {
+    return <MovieDetailsSkeleton />;
+  }
+
+  if (error) {
+    return (
+      <ErrorState onRetry={refetch} description="Unable to load this movie." />
+    );
+  }
+
+  if (!movie) {
+    return (
+      <EmptyState
+        title="Movie not found"
+        description="We could not find a movie for this ID. It may have been removed or the ID is invalid."
+      />
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-12 sm:gap-16">
+      <MovieDetailsHero movie={movie} />
+
+      <Section title="Cast" subtitle="The actors who brought this story to life.">
+        <EmptyState
+          title="Cast coming soon"
+          description="The full cast list will appear here once movie data is available."
+        />
+      </Section>
+
+      <Section title="Crew" subtitle="The people behind the scenes.">
+        <EmptyState
+          title="Crew coming soon"
+          description="The crew credits will appear here once movie data is available."
+        />
+      </Section>
+
+      <Section title="Trailer" subtitle="Watch the official trailer.">
+        <EmptyState
+          title="Trailer coming soon"
+          description="The official trailer will appear here once movie data is available."
+        />
+      </Section>
+
+      <Section title="Production Companies" subtitle="The studios behind the movie.">
+        <EmptyState
+          title="Production companies coming soon"
+          description="The production companies will appear here once movie data is available."
+        />
+      </Section>
+
+      <Section title="Spoken Languages" subtitle="Languages featured in the movie.">
+        <EmptyState
+          title="Spoken languages coming soon"
+          description="The spoken languages will appear here once movie data is available."
+        />
+      </Section>
+
+      <Section title="Recommendations" subtitle="More movies you might enjoy.">
+        <EmptyState
+          title="Recommendations coming soon"
+          description="Similar movies will appear here once movie data is available."
+        />
+      </Section>
+    </div>
+  );
+};
 
 export default MovieDetailsPage;
