@@ -13,11 +13,16 @@ export function mapApiMovie(movie: ApiMovie, genres: Genre[] = []): Movie {
     id: movie.id,
     title: movie.title,
     posterSrc: movie.poster_path ? buildImageUrl(movie.poster_path, POSTER_SIZE) : undefined,
+    backdropSrc: movie.backdrop_path
+      ? buildImageUrl(movie.backdrop_path, 'original')
+      : undefined,
     releaseDate: movie.release_date,
     voteAverage: movie.vote_average,
     genres: (movie.genre_ids ?? [])
       .map((id) => ({ id, name: genreNames.get(id) ?? '' }))
       .filter((genre) => genre.name !== ''),
+    overview: movie.overview,
+    tagline: movie.tagline,
   };
 }
 

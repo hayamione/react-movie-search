@@ -5,7 +5,10 @@ export interface Movie {
   id: EntityId;
   title: string;
   posterSrc?: string;
+  backdropSrc?: string;
   releaseDate?: string;
   voteAverage?: number;
   genres?: Genre[];
+  overview?: string;
+  tagline?: string;
 }
