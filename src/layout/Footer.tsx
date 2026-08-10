@@ -1,4 +1,4 @@
-import Container from './Container';
+import Container from '../components/ui/Container';
 
 const NAV_PLACEHOLDERS = ['Link 1', 'Link 2', 'Link 3'];
 const SOCIAL_PLACEHOLDERS = ['Twitter', 'GitHub', 'Instagram'];

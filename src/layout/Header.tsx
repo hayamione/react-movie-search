@@ -1,4 +1,4 @@
-import Container from './Container';
+import Container from '../components/ui/Container';
 
 const Header = () => (
   <header className="sticky top-0 z-40 border-b border-slate-800 bg-slate-950/80 backdrop-blur-md">

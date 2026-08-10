@@ -1,3 +1,12 @@
+export interface Movie {
+  id: number;
+  title: string;
+  posterSrc?: string;
+  releaseDate?: string;
+  voteAverage?: number;
+  genres?: string[];
+}
+
 export interface Rating {
   Source: string;
   Value: string;

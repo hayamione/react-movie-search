@@ -1,5 +1,5 @@
 import type { PropsWithChildren } from 'react';
-import Container from './Container';
+import Container from '../components/ui/Container';
 import Footer from './Footer';
 import Header from './Header';
 
