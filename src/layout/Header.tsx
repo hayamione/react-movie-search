@@ -167,7 +167,7 @@ const Header = () => {
         id={menuId}
         onKeyDown={handleMenuKeyDown}
         aria-hidden={!open}
-        className={`origin-top transition-all duration-smooth lg:hidden ${
+        className={`origin-top transition-all duration-smooth lg:hidden absolute right-0 left-0 border-slate-800 bg-slate-950/90 backdrop-blur-md ${
           open ? 'visible translate-y-0 opacity-100' : 'invisible -translate-y-2 opacity-0'
         }`}
       >
