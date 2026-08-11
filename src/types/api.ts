@@ -1,4 +1,4 @@
-import type { EntityId, IsoDate } from './common';
+import type { EntityId, IsoDate, IsoDateTime } from './common';
 
 export interface ApiMovie {
   id: EntityId;
@@ -38,6 +38,38 @@ export interface ApiPaginatedResult<T> {
 
 export interface ApiGenreList {
   genres: ApiGenre[];
+}
+
+export interface ApiCredit {
+  id: EntityId;
+  name: string;
+  profile_path?: string | null;
+  character?: string;
+  job?: string;
+  department?: string;
+  order?: number;
+}
+
+export interface ApiCredits {
+  id: EntityId;
+  cast: ApiCredit[];
+  crew: ApiCredit[];
+}
+
+export interface ApiVideo {
+  id: string;
+  key: string;
+  name: string;
+  site?: string;
+  size?: number;
+  type?: string;
+  official?: boolean;
+  published_at?: IsoDateTime;
+}
+
+export interface ApiVideos {
+  id: EntityId;
+  results: ApiVideo[];
 }
 
 export interface Rating {

@@ -3,7 +3,7 @@ import FavoritesPage from './pages/FavoritesPage';
 import GenrePage from './pages/GenrePage';
 import GenresPage from './pages/GenresPage';
 import HomePage from './pages/HomePage';
-import MovieDetailsPage from './pages/MovieDetailsPage';
+import MovieDetailsPage from './pages/MovieDetails/MovieDetailsPage';
 import MoviesPage from './pages/MoviesPage';
 import SearchPage from './pages/SearchPage';
 import TopRatedPage from './pages/TopRatedPage';

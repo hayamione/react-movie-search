@@ -1,10 +1,20 @@
-import type { ApiMovie, ApiPaginatedResult } from '../../types/api';
+import type {
+  ApiCredit,
+  ApiCredits,
+  ApiMovie,
+  ApiPaginatedResult,
+  ApiVideo,
+  ApiVideos,
+} from '../../types/api';
+import type { Credit, MovieCredits } from '../../types/credit';
 import type { Genre } from '../../types/genre';
 import type { Movie, MovieDetails } from '../../types/movie';
+import type { MovieVideo } from '../../types/video';
 import { buildImageUrl, request } from './client';
 import { ENDPOINTS } from './endpoints';
 
 const POSTER_SIZE = 'w342' as const;
+const PROFILE_SIZE = 'w185' as const;
 
 export function mapApiMovie(movie: ApiMovie, genres: Genre[] = []): MovieDetails {
   const genreNames = new Map(genres.map((genre) => [genre.id, genre.name]));
@@ -49,6 +59,61 @@ export async function getRecommendedMovies(
     { signal }
   );
   return data.results.map((movie) => mapApiMovie(movie));
+}
+
+export async function getSimilarMovies(
+  id: number,
+  signal?: AbortSignal
+): Promise<Movie[]> {
+  const data = await request<ApiPaginatedResult<ApiMovie>>(ENDPOINTS.movie.similar(id), {
+    signal,
+  });
+  return data.results.map((movie) => mapApiMovie(movie));
+}
+
+function mapApiCredit(credit: ApiCredit): Credit {
+  return {
+    id: credit.id,
+    name: credit.name,
+    profileSrc: credit.profile_path
+      ? buildImageUrl(credit.profile_path, PROFILE_SIZE)
+      : undefined,
+    character: credit.character,
+    job: credit.job,
+    order: credit.order,
+  };
+}
+
+export async function getMovieCredits(
+  id: number,
+  signal?: AbortSignal
+): Promise<MovieCredits> {
+  const data = await request<ApiCredits>(ENDPOINTS.movie.credits(id), { signal });
+  return {
+    id: data.id,
+    cast: data.cast.map(mapApiCredit),
+    crew: data.crew.map(mapApiCredit),
+  };
+}
+
+function mapApiVideo(video: ApiVideo): MovieVideo {
+  return {
+    id: video.id,
+    key: video.key,
+    name: video.name,
+    site: video.site,
+    size: video.size,
+    type: video.type,
+    publishedAt: video.published_at,
+  };
+}
+
+export async function getMovieVideos(
+  id: number,
+  signal?: AbortSignal
+): Promise<MovieVideo[]> {
+  const data = await request<ApiVideos>(ENDPOINTS.movie.videos(id), { signal });
+  return data.results.map(mapApiVideo);
 }
 
 export type DiscoverSortBy = 'popularity' | 'vote_average' | 'release_date';
