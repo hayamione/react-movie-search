@@ -2,12 +2,11 @@ import { Fragment, useEffect, useState } from 'react';
 import type { MovieDetails } from '../../types/movie';
 import Button from '../ui/Button';
 import EmptyState from '../ui/EmptyState';
-import ErrorState from '../ui/ErrorState';
 import GenreChip from '../ui/GenreChip';
 import Poster from '../ui/Poster';
 import RatingBadge from '../ui/RatingBadge';
 import { formatRuntime } from '../../utils/format';
-import MovieDetailsSkeleton from './MovieDetailsSkeleton';
+import HeroSkeleton from '../ui/HeroSkeleton';
 
 const HeartIcon = ({ filled = false }: { filled?: boolean }) => (
   <svg
@@ -49,11 +48,11 @@ const MovieDetailsHero = ({ movie, loading, error, onRetry }: MovieDetailsHeroPr
   }, [movie?.id]);
 
   if (loading) {
-    return <MovieDetailsSkeleton />;
+    return <HeroSkeleton />;
   }
 
   if (error) {
-    return <ErrorState onRetry={onRetry} description="Unable to load this movie." />;
+    return <EmptyState tone="error" onRetry={onRetry} description="Unable to load this movie." />;
   }
 
   if (!movie) {

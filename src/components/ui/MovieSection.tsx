@@ -2,7 +2,6 @@ import type { Movie } from '../../types/movie';
 import MovieCard from '../MovieCard';
 import MovieCarousel from './MovieCarousel';
 import EmptyState from './EmptyState';
-import ErrorState from './ErrorState';
 import MovieGrid from './MovieGrid';
 import type { GridColumns } from './MovieGrid';
 import Section from './Section';
@@ -42,7 +41,11 @@ const MovieSection = ({
   if (error) {
     return (
       <Section title={title} subtitle={subtitle}>
-        <ErrorState onRetry={onRetry} description={`Unable to load ${title.toLowerCase()}.`} />
+        <EmptyState
+          tone="error"
+          onRetry={onRetry}
+          description={`Unable to load ${title.toLowerCase()} right now.`}
+        />
       </Section>
     );
   }

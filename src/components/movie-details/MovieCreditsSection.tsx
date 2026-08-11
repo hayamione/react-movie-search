@@ -3,9 +3,9 @@ import type { Credit } from '../../types/credit';
 import { useMovieCredits } from '../../hooks/useMovieCredits';
 import Carousel from '../ui/Carousel';
 import EmptyState from '../ui/EmptyState';
-import ErrorState from '../ui/ErrorState';
 import PosterSkeleton from '../ui/PosterSkeleton';
 import Section from '../ui/Section';
+import Skeleton from '../ui/Skeleton';
 import CastCarousel from './CastCarousel';
 import CrewSection from './CrewSection';
 
@@ -20,8 +20,8 @@ const CastSkeleton = () => (
         <div key={index} className="w-36 shrink-0 sm:w-40">
           <PosterSkeleton className="rounded-2xl" />
           <div className="mt-3 space-y-2 px-0.5">
-            <div className="h-3 w-3/4 animate-pulse rounded bg-slate-800" />
-            <div className="h-3 w-1/2 animate-pulse rounded bg-slate-800" />
+            <Skeleton className="h-3 w-3/4" />
+            <Skeleton className="h-3 w-1/2" />
           </div>
         </div>
       ))}
@@ -34,8 +34,10 @@ const CrewSkeleton = () => (
     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
       {Array.from({ length: 4 }).map((_, index) => (
         <div key={index} className="rounded-2xl border border-slate-800 bg-slate-900 p-4">
-          <div className="h-3 w-16 animate-pulse rounded bg-slate-800" />
-          <div className="mt-2 h-4 w-2/3 animate-pulse rounded bg-slate-800" />
+          <Skeleton className="h-3 w-16" />
+          <div className="mt-2">
+            <Skeleton className="h-4 w-2/3" />
+          </div>
         </div>
       ))}
     </div>
@@ -57,7 +59,8 @@ const MovieCreditsSection = ({ movieId }: MovieCreditsSectionProps) => {
   if (error) {
     return (
       <Section title="Cast & Crew" subtitle="The people who brought this story to life.">
-        <ErrorState
+        <EmptyState
+          tone="error"
           onRetry={refetch}
           description="Unable to load the cast and crew for this movie."
         />

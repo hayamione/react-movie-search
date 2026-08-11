@@ -1,5 +1,5 @@
+import ChipSkeleton from '../components/ui/ChipSkeleton';
 import EmptyState from '../components/ui/EmptyState';
-import ErrorState from '../components/ui/ErrorState';
 import GenreChip from '../components/ui/GenreChip';
 import Section from '../components/ui/Section';
 import { useGenres } from '../hooks/useGenres';
@@ -21,13 +21,9 @@ const GenresPage = () => {
 
       <Section title="All Genres" subtitle="Choose a genre to explore.">
         {loading ? (
-          <div className="flex flex-wrap gap-2" aria-hidden="true">
-            {Array.from({ length: 12 }).map((_, index) => (
-              <div key={index} className="h-8 w-24 animate-pulse rounded-xl bg-slate-800" />
-            ))}
-          </div>
+          <ChipSkeleton count={12} />
         ) : error ? (
-          <ErrorState onRetry={refetch} description="Unable to load genres." />
+          <EmptyState tone="error" onRetry={refetch} description="Unable to load genres right now." />
         ) : genres.length === 0 ? (
           <EmptyState title="No genres available" />
         ) : (

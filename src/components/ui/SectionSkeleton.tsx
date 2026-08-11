@@ -1,4 +1,5 @@
 import MovieCardSkeleton from './MovieCardSkeleton';
+import Skeleton from './Skeleton';
 
 interface SectionSkeletonProps {
   showTitle?: boolean;
@@ -12,9 +13,7 @@ const SectionSkeleton = ({
   className = '',
 }: SectionSkeletonProps) => (
   <div className={className} aria-hidden="true">
-    {showTitle && (
-      <div className="h-7 w-48 animate-pulse rounded-xl bg-slate-800 sm:h-8" />
-    )}
+    {showTitle && <Skeleton className="h-7 w-48 sm:h-8" />}
     <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-6 lg:grid-cols-4">
       {Array.from({ length: cards }).map((_, index) => (
         <MovieCardSkeleton key={index} />

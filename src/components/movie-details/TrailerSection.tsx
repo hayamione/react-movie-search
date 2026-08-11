@@ -2,8 +2,8 @@ import type { EntityId } from '../../types/common';
 import type { MovieVideo } from '../../types/video';
 import { useMovieVideos } from '../../hooks/useMovieVideos';
 import EmptyState from '../ui/EmptyState';
-import ErrorState from '../ui/ErrorState';
 import Section from '../ui/Section';
+import Skeleton from '../ui/Skeleton';
 
 const trailerEligible = (video: MovieVideo) =>
   video.site?.toLowerCase() === 'youtube' && video.type === 'Trailer';
@@ -21,7 +21,7 @@ const TrailerSection = ({ movieId }: TrailerSectionProps) => {
   if (loading) {
     return (
       <Section title="Trailer" subtitle="Watch the official trailer.">
-        <div aria-hidden="true" className="aspect-video w-full animate-pulse rounded-2xl bg-slate-800" />
+        <Skeleton className="aspect-video w-full rounded-2xl" />
       </Section>
     );
   }
@@ -29,7 +29,11 @@ const TrailerSection = ({ movieId }: TrailerSectionProps) => {
   if (error) {
     return (
       <Section title="Trailer" subtitle="Watch the official trailer.">
-        <ErrorState onRetry={refetch} description="Unable to load the trailer for this movie." />
+        <EmptyState
+          tone="error"
+          onRetry={refetch}
+          description="Unable to load the trailer for this movie."
+        />
       </Section>
     );
   }

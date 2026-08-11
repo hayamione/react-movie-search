@@ -1,8 +1,9 @@
 import type { Movie } from '../types/movie';
 import Button from '../components/ui/Button';
+import ChipSkeleton from '../components/ui/ChipSkeleton';
 import EmptyState from '../components/ui/EmptyState';
-import ErrorState from '../components/ui/ErrorState';
 import GenreChip from '../components/ui/GenreChip';
+import HeroSkeleton from '../components/ui/HeroSkeleton';
 import MovieSection from '../components/ui/MovieSection';
 import Poster from '../components/ui/Poster';
 import RatingBadge from '../components/ui/RatingBadge';
@@ -15,26 +16,6 @@ import {
   useTrendingMovies,
   useUpcomingMovies,
 } from '../hooks/useMovies';
-
-const HeroSkeleton = () => (
-  <div
-    className="animate-pulse rounded-2xl bg-slate-900 p-6 sm:p-8 lg:p-12"
-    aria-hidden="true"
-  >
-    <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:gap-12">
-      <div className="aspect-[2/3] w-36 shrink-0 rounded-xl bg-slate-800 sm:w-44 lg:w-52" />
-      <div className="flex flex-1 flex-col gap-4">
-        <div className="h-10 w-2/3 rounded-xl bg-slate-800" />
-        <div className="h-4 w-1/3 rounded-xl bg-slate-800" />
-        <div className="h-4 w-3/4 rounded-xl bg-slate-800" />
-        <div className="mt-2 flex flex-wrap gap-3">
-          <div className="h-10 w-28 rounded-xl bg-slate-800" />
-          <div className="h-10 w-36 rounded-xl bg-slate-800" />
-        </div>
-      </div>
-    </div>
-  </div>
-);
 
 interface HeroSectionProps {
   movie: Movie;
@@ -145,14 +126,15 @@ const HomePage = () => {
       {trendingLoading ? (
         <HeroSkeleton />
       ) : trendingError ? (
-        <ErrorState
+        <EmptyState
+          tone="error"
           onRetry={refetchTrending}
-          description="Unable to load the featured movie."
+          description="Unable to load the featured movie right now."
         />
       ) : featured ? (
         <HeroSection movie={featured} />
       ) : (
-        <EmptyState title="No featured movie available" />
+        <EmptyState title="No featured movie available right now." />
       )}
 
       <MovieSection
@@ -195,18 +177,11 @@ const HomePage = () => {
 
       <Section title="Browse by Genre" subtitle="Explore movies by genre.">
         {genresLoading ? (
-          <div className="flex flex-wrap gap-2" aria-hidden="true">
-            {Array.from({ length: 8 }).map((_, index) => (
-              <div
-                key={index}
-                className="h-8 w-20 animate-pulse rounded-xl bg-slate-800"
-              />
-            ))}
-          </div>
+          <ChipSkeleton count={8} />
         ) : genresError ? (
-          <ErrorState onRetry={refetchGenres} description="Unable to load genres." />
+          <EmptyState tone="error" onRetry={refetchGenres} description="Unable to load genres right now." />
         ) : genres.length === 0 ? (
-          <EmptyState title="No genres available" />
+          <EmptyState title="No genres available right now." />
         ) : (
           <div className="flex flex-wrap gap-2">
             {genres.map((genre) => (

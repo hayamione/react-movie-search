@@ -1,12 +1,11 @@
+import Skeleton from './Skeleton';
+
 interface PosterSkeletonProps {
   className?: string;
 }
 
 const PosterSkeleton = ({ className = '' }: PosterSkeletonProps) => (
-  <div
-    className={`aspect-[2/3] w-full animate-pulse rounded-xl bg-slate-800 ${className}`}
-    aria-hidden="true"
-  />
+  <Skeleton className={`aspect-[2/3] w-full rounded-xl ${className}`} />
 );
 
 export default PosterSkeleton;

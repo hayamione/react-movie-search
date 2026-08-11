@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { PropsWithChildren } from 'react';
+import { SearchX } from 'lucide-react';
 import type { Movie } from '../types/movie';
 import Button from '../components/ui/Button';
 import EmptyState from '../components/ui/EmptyState';
-import ErrorState from '../components/ui/ErrorState';
 import GenreChip from '../components/ui/GenreChip';
 import MovieCard from '../components/MovieCard';
-import MovieCardSkeleton from '../components/ui/MovieCardSkeleton';
 import MovieGrid from '../components/ui/MovieGrid';
+import MovieGridSkeleton from '../components/ui/MovieGridSkeleton';
 import Pagination from '../components/ui/Pagination';
 import SearchBar from '../components/ui/SearchBar';
 import Section from '../components/ui/Section';
@@ -56,21 +56,7 @@ const sortMovies = (list: Movie[], sortBy: SortBy): Movie[] => {
 };
 
 const NoResultsIllustration = () => (
-  <svg
-    viewBox="0 0 96 96"
-    className="h-12 w-12"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2.5"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    aria-hidden="true"
-  >
-    <circle cx="40" cy="40" r="26" />
-    <line x1="59" y1="59" x2="80" y2="80" />
-    <path d="M31 33l18 18M49 33l-18 18" />
-    <path d="M26 28l3-4M50 24l4-3M27 58l-4 3" />
-  </svg>
+  <SearchX className="h-12 w-12" aria-hidden="true" strokeWidth={1.75} />
 );
 
 const SearchHeader = ({ children }: PropsWithChildren) => (
@@ -249,13 +235,9 @@ const SearchPage = () => {
             description="Type a movie title above or choose one of the popular searches to get started."
           />
         ) : loading ? (
-          <MovieGrid columns={5}>
-            {Array.from({ length: 10 }).map((_, index) => (
-              <MovieCardSkeleton key={index} />
-            ))}
-          </MovieGrid>
+          <MovieGridSkeleton columns={5} count={10} />
         ) : error ? (
-          <ErrorState onRetry={refetch} description="We couldn't load the search results." />
+          <EmptyState tone="error" onRetry={refetch} description="We couldn't load the search results." />
         ) : sortedMovies.length === 0 ? (
           <EmptyState
             icon={<NoResultsIllustration />}
