@@ -2,6 +2,7 @@ import type { EntityId } from '../../types/common';
 import { useMovieDetails } from '../../hooks/useMovieDetails';
 import MovieDetailsHero from '../../components/movie-details/MovieDetailsHero';
 import MovieMetadataSection from '../../components/movie-details/MovieMetadataSection';
+import MovieCreditsSection from '../../components/movie-details/MovieCreditsSection';
 import RecommendationsSection from '../../components/movie-details/RecommendationsSection';
 import EmptyState from '../../components/ui/EmptyState';
 import Section from '../../components/ui/Section';
@@ -19,19 +20,7 @@ const MovieDetailsPage = ({ movieId }: MovieDetailsPageProps) => {
 
       <MovieMetadataSection movie={movie} />
 
-      <Section title="Cast" subtitle="The actors who brought this story to life.">
-        <EmptyState
-          title="Cast coming soon"
-          description="The full cast list will appear here once movie data is available."
-        />
-      </Section>
-
-      <Section title="Crew" subtitle="The people behind the scenes.">
-        <EmptyState
-          title="Crew coming soon"
-          description="The crew credits will appear here once movie data is available."
-        />
-      </Section>
+      <MovieCreditsSection movieId={movieId} />
 
       <div id="trailer" className="scroll-mt-20">
         <Section title="Trailer" subtitle="Watch the official trailer.">

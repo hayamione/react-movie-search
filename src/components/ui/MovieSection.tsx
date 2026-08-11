@@ -1,5 +1,6 @@
 import type { Movie } from '../../types/movie';
 import MovieCard from '../MovieCard';
+import Carousel from './Carousel';
 import EmptyState from './EmptyState';
 import ErrorState from './ErrorState';
 import MovieGrid from './MovieGrid';
@@ -60,11 +61,11 @@ const MovieSection = ({
   return (
     <Section title={title} subtitle={subtitle}>
       {horizontal ? (
-        <div className="-mx-4 flex gap-4 overflow-x-auto px-4 pb-2 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+        <Carousel>
           {movies.map((movie) => (
             <MovieCard key={movie.id} movie={movie} className="w-40 shrink-0 sm:w-48" />
           ))}
-        </div>
+        </Carousel>
       ) : (
         <MovieGrid columns={columns}>
           {movies.map((movie) => (
