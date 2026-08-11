@@ -17,8 +17,8 @@ const RecommendationsSection = ({ movieId }: RecommendationsSectionProps) => {
       loading={loading}
       error={error}
       onRetry={refetch}
+      horizontal
       cards={6}
-      columns={4}
     />
   );
 };

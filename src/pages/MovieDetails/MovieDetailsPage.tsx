@@ -3,6 +3,8 @@ import { useMovieDetails } from '../../hooks/useMovieDetails';
 import MovieDetailsHero from '../../components/movie-details/MovieDetailsHero';
 import MovieMetadataSection from '../../components/movie-details/MovieMetadataSection';
 import MovieCreditsSection from '../../components/movie-details/MovieCreditsSection';
+import TrailerSection from '../../components/movie-details/TrailerSection';
+import SimilarMoviesSection from '../../components/movie-details/SimilarMoviesSection';
 import RecommendationsSection from '../../components/movie-details/RecommendationsSection';
 import EmptyState from '../../components/ui/EmptyState';
 import Section from '../../components/ui/Section';
@@ -23,12 +25,7 @@ const MovieDetailsPage = ({ movieId }: MovieDetailsPageProps) => {
       <MovieCreditsSection movieId={movieId} />
 
       <div id="trailer" className="scroll-mt-20">
-        <Section title="Trailer" subtitle="Watch the official trailer.">
-          <EmptyState
-            title="Trailer coming soon"
-            description="The official trailer will appear here once movie data is available."
-          />
-        </Section>
+        <TrailerSection movieId={movieId} />
       </div>
 
       <Section title="Production Companies" subtitle="The studios behind the movie.">
@@ -44,6 +41,8 @@ const MovieDetailsPage = ({ movieId }: MovieDetailsPageProps) => {
           description="The spoken languages will appear here once movie data is available."
         />
       </Section>
+
+      <SimilarMoviesSection movieId={movieId} />
 
       <RecommendationsSection movieId={movieId} />
     </div>
