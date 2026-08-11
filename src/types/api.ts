@@ -4,6 +4,7 @@ export interface ApiMovie {
   id: EntityId;
   title: string;
   original_title?: string;
+  original_language?: string;
   poster_path?: string | null;
   backdrop_path?: string | null;
   release_date?: IsoDate;
@@ -14,6 +15,10 @@ export interface ApiMovie {
   overview?: string;
   runtime?: number;
   tagline?: string;
+  status?: string;
+  budget?: number;
+  revenue?: number;
+  popularity?: number;
 }
 
 export interface ApiGenre {

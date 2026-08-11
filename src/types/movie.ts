@@ -15,5 +15,11 @@ export interface Movie {
 
 export interface MovieDetails extends Movie {
   originalTitle?: string;
+  originalLanguage?: string;
   runtime?: number;
+  status?: string;
+  budget?: number;
+  revenue?: number;
+  voteCount?: number;
+  popularity?: number;
 }

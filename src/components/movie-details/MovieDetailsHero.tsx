@@ -1,22 +1,13 @@
 import { Fragment, useEffect, useState } from 'react';
-import type { EntityId } from '../../types/common';
-import { useMovieDetails } from '../../hooks/useMovieDetails';
+import type { MovieDetails } from '../../types/movie';
 import Button from '../ui/Button';
 import EmptyState from '../ui/EmptyState';
 import ErrorState from '../ui/ErrorState';
 import GenreChip from '../ui/GenreChip';
 import Poster from '../ui/Poster';
 import RatingBadge from '../ui/RatingBadge';
+import { formatRuntime } from '../../utils/format';
 import MovieDetailsSkeleton from './MovieDetailsSkeleton';
-
-const formatRuntime = (runtime?: number) => {
-  if (runtime === undefined || runtime <= 0) {
-    return undefined;
-  }
-  const hours = Math.floor(runtime / 60);
-  const minutes = runtime % 60;
-  return hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
-};
 
 const HeartIcon = ({ filled = false }: { filled?: boolean }) => (
   <svg
@@ -42,11 +33,13 @@ const scrollToTrailer = () => {
 };
 
 interface MovieDetailsHeroProps {
-  movieId?: EntityId;
+  movie: MovieDetails | null;
+  loading: boolean;
+  error: Error | null;
+  onRetry: () => void;
 }
 
-const MovieDetailsHero = ({ movieId }: MovieDetailsHeroProps) => {
-  const { data: movie, loading, error, refetch } = useMovieDetails(movieId);
+const MovieDetailsHero = ({ movie, loading, error, onRetry }: MovieDetailsHeroProps) => {
   const [favorite, setFavorite] = useState(false);
   const [backdropErrored, setBackdropErrored] = useState(false);
 
@@ -60,7 +53,7 @@ const MovieDetailsHero = ({ movieId }: MovieDetailsHeroProps) => {
   }
 
   if (error) {
-    return <ErrorState onRetry={refetch} description="Unable to load this movie." />;
+    return <ErrorState onRetry={onRetry} description="Unable to load this movie." />;
   }
 
   if (!movie) {

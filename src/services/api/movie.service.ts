@@ -29,7 +29,13 @@ export function mapApiMovie(movie: ApiMovie, genres: Genre[] = []): MovieDetails
     id: movie.id,
     title: movie.title,
     originalTitle: movie.original_title,
+    originalLanguage: movie.original_language,
     runtime: movie.runtime,
+    status: movie.status,
+    budget: movie.budget,
+    revenue: movie.revenue,
+    voteCount: movie.vote_count,
+    popularity: movie.popularity,
     posterSrc: movie.poster_path ? buildImageUrl(movie.poster_path, POSTER_SIZE) : undefined,
     backdropSrc: movie.backdrop_path
       ? buildImageUrl(movie.backdrop_path, 'original')
