@@ -3,9 +3,7 @@ import { useMovieDetails } from '../../hooks/useMovieDetails';
 import MovieDetailsHero from '../../components/movie-details/MovieDetailsHero';
 import MovieMetadataSection from '../../components/movie-details/MovieMetadataSection';
 import MovieCreditsSection from '../../components/movie-details/MovieCreditsSection';
-import TrailerSection from '../../components/movie-details/TrailerSection';
-import ProductionCompaniesSection from '../../components/movie-details/ProductionCompaniesSection';
-import SpokenLanguagesSection from '../../components/movie-details/SpokenLanguagesSection';
+import MovieExtrasSection from '../../components/movie-details/MovieExtrasSection';
 import SimilarMoviesSection from '../../components/movie-details/SimilarMoviesSection';
 import RecommendationsSection from '../../components/movie-details/RecommendationsSection';
 
@@ -24,13 +22,7 @@ const MovieDetailsPage = ({ movieId }: MovieDetailsPageProps) => {
 
       <MovieCreditsSection movieId={movieId} />
 
-      <div id="trailer" className="scroll-mt-20">
-        <TrailerSection movieId={movieId} />
-      </div>
-
-      <ProductionCompaniesSection movie={movie} />
-
-      <SpokenLanguagesSection movie={movie} />
+      <MovieExtrasSection movie={movie} movieId={movieId} />
 
       <SimilarMoviesSection movieId={movieId} />
 

@@ -22,7 +22,7 @@ const ProductionCompaniesSection = ({ movie }: ProductionCompaniesSectionProps) 
           description="Production company data could not be found for this movie."
         />
       ) : (
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           {companies.map((company) => (
             <CompanyCard key={company.id} company={company} />
           ))}
