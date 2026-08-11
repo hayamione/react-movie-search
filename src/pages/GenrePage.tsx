@@ -1,4 +1,5 @@
 import type { Movie } from '../types/movie';
+import PageMeta from '../components/seo/PageMeta';
 import EmptyState from '../components/ui/EmptyState';
 import GenreChip from '../components/ui/GenreChip';
 import HeroSkeleton from '../components/ui/HeroSkeleton';
@@ -127,6 +128,10 @@ const GenrePage = ({ genreId }: GenrePageProps) => {
 
   return (
     <div className="flex flex-col gap-12 sm:gap-16">
+      <PageMeta
+        title={`${genre.name} Movies`}
+        description={`Discover the most popular, top-rated and newest ${genre.name.toLowerCase()} movies.`}
+      />
       <header className="rounded-2xl border border-slate-800 bg-slate-900 px-6 py-8 sm:px-10 sm:py-10 lg:px-14 lg:py-12">
         <p className="text-xs font-semibold uppercase tracking-widest text-accent">
           Browse by genre

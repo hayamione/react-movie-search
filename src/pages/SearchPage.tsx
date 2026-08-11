@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import type { PropsWithChildren } from 'react';
 import { SearchX } from 'lucide-react';
 import type { Movie } from '../types/movie';
+import PageMeta from '../components/seo/PageMeta';
 import Button from '../components/ui/Button';
 import EmptyState from '../components/ui/EmptyState';
 import GenreChip from '../components/ui/GenreChip';
@@ -164,6 +165,10 @@ const SearchPage = () => {
 
   return (
     <div className="flex flex-col gap-12 sm:gap-16">
+      <PageMeta
+        title="Search Movies"
+        description="Search across millions of movies and discover your next watch with filters for year, genre and sort order."
+      />
       <SearchHeader>
         <SearchBar
           size="lg"

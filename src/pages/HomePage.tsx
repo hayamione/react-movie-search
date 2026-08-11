@@ -1,4 +1,5 @@
 import type { Movie } from '../types/movie';
+import PageMeta from '../components/seo/PageMeta';
 import Button from '../components/ui/Button';
 import ChipSkeleton from '../components/ui/ChipSkeleton';
 import EmptyState from '../components/ui/EmptyState';
@@ -123,6 +124,11 @@ const HomePage = () => {
 
   return (
     <div className="flex flex-col gap-12 sm:gap-16">
+      <PageMeta
+        title="Discover Movies"
+        brand="prefix"
+        description="Browse trending, popular, top-rated and upcoming movies. Search across genres and find your next favorite film."
+      />
       {trendingLoading ? (
         <HeroSkeleton />
       ) : trendingError ? (

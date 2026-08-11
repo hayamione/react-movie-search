@@ -1,6 +1,7 @@
 import '@testing-library/jest-dom/vitest';
 import { expect, test, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
+import { HelmetProvider } from 'react-helmet-async';
 import { MemoryRouter } from 'react-router-dom';
 import App from '../App';
 
@@ -52,9 +53,11 @@ vi.mock('../hooks/useGenres', () => ({
 
 test('renders the home page with the featured movie and all sections', () => {
   render(
-    <MemoryRouter>
-      <App />
-    </MemoryRouter>
+    <HelmetProvider context={{}}>
+      <MemoryRouter>
+        <App />
+      </MemoryRouter>
+    </HelmetProvider>
   );
 
   expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Featured Movie');

@@ -1,3 +1,4 @@
+import PageMeta from '../components/seo/PageMeta';
 import ChipSkeleton from '../components/ui/ChipSkeleton';
 import EmptyState from '../components/ui/EmptyState';
 import GenreChip from '../components/ui/GenreChip';
@@ -9,6 +10,10 @@ const GenresPage = () => {
 
   return (
     <div className="flex flex-col gap-12 sm:gap-16">
+      <PageMeta
+        title="Browse by Genre"
+        description="Explore movies by genre — from action and comedy to drama and sci-fi."
+      />
       <header className="rounded-2xl border border-slate-800 bg-slate-900 px-6 py-8 sm:px-10 sm:py-10 lg:px-14 lg:py-12">
         <p className="text-xs font-semibold uppercase tracking-widest text-accent">Browse</p>
         <h1 className="mt-2 text-balance text-3xl font-extrabold tracking-tight text-slate-50 sm:text-4xl lg:text-5xl">
