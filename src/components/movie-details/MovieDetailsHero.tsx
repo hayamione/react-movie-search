@@ -1,9 +1,13 @@
-import { Fragment } from 'react';
-import type { MovieDetails } from '../../types/movie';
+import { Fragment, useEffect, useState } from 'react';
+import type { EntityId } from '../../types/common';
+import { useMovieDetails } from '../../hooks/useMovieDetails';
 import Button from '../ui/Button';
+import EmptyState from '../ui/EmptyState';
+import ErrorState from '../ui/ErrorState';
 import GenreChip from '../ui/GenreChip';
 import Poster from '../ui/Poster';
 import RatingBadge from '../ui/RatingBadge';
+import MovieDetailsSkeleton from './MovieDetailsSkeleton';
 
 const formatRuntime = (runtime?: number) => {
   if (runtime === undefined || runtime <= 0) {
@@ -14,15 +18,65 @@ const formatRuntime = (runtime?: number) => {
   return hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
 };
 
+const HeartIcon = ({ filled = false }: { filled?: boolean }) => (
+  <svg
+    className={`h-4 w-4 ${filled ? 'fill-current' : 'fill-none stroke-current'}`}
+    viewBox="0 0 24 24"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+  </svg>
+);
+
+const PlayIcon = () => (
+  <svg className="h-4 w-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M8 5v14l11-7z" />
+  </svg>
+);
+
+const scrollToTrailer = () => {
+  document.getElementById('trailer')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+};
+
 interface MovieDetailsHeroProps {
-  movie: MovieDetails;
+  movieId?: EntityId;
 }
 
-const MovieDetailsHero = ({ movie }: MovieDetailsHeroProps) => {
+const MovieDetailsHero = ({ movieId }: MovieDetailsHeroProps) => {
+  const { data: movie, loading, error, refetch } = useMovieDetails(movieId);
+  const [favorite, setFavorite] = useState(false);
+  const [backdropErrored, setBackdropErrored] = useState(false);
+
+  useEffect(() => {
+    setFavorite(false);
+    setBackdropErrored(false);
+  }, [movie?.id]);
+
+  if (loading) {
+    return <MovieDetailsSkeleton />;
+  }
+
+  if (error) {
+    return <ErrorState onRetry={refetch} description="Unable to load this movie." />;
+  }
+
+  if (!movie) {
+    return (
+      <EmptyState
+        title="Movie not found"
+        description="We could not find a movie for this ID. It may have been removed or the ID is invalid."
+      />
+    );
+  }
+
   const releaseYear = movie.releaseDate?.slice(0, 4);
   const runtimeLabel = formatRuntime(movie.runtime);
   const showOriginalTitle =
     Boolean(movie.originalTitle) && movie.originalTitle !== movie.title;
+  const showBackdrop = Boolean(movie.backdropSrc) && !backdropErrored;
 
   const metaParts = [releaseYear, runtimeLabel].filter(
     (part): part is string => Boolean(part)
@@ -30,11 +84,12 @@ const MovieDetailsHero = ({ movie }: MovieDetailsHeroProps) => {
 
   return (
     <section className="relative overflow-hidden rounded-2xl border border-slate-800 bg-slate-900">
-      {movie.backdropSrc && (
+      {showBackdrop && (
         <img
           src={movie.backdropSrc}
           alt=""
           loading="eager"
+          onError={() => setBackdropErrored(true)}
           className="absolute inset-0 h-full w-full object-cover"
         />
       )}
@@ -94,11 +149,18 @@ const MovieDetailsHero = ({ movie }: MovieDetailsHeroProps) => {
           )}
 
           <div className="mt-2 flex flex-wrap items-center gap-3">
-            <Button variant="primary" size="lg">
-              Watch Now
+            <Button
+              variant={favorite ? 'primary' : 'secondary'}
+              size="lg"
+              aria-pressed={favorite}
+              onClick={() => setFavorite((prev) => !prev)}
+            >
+              <HeartIcon filled={favorite} />
+              {favorite ? 'Favorited' : 'Add to favorites'}
             </Button>
-            <Button variant="secondary" size="lg">
-              Add to Watchlist
+            <Button variant="ghost" size="lg" onClick={scrollToTrailer}>
+              <PlayIcon />
+              Watch Trailer
             </Button>
           </div>
         </div>
