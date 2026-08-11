@@ -1,6 +1,7 @@
 import GenrePage from './pages/GenrePage';
 import GenresPage from './pages/GenresPage';
 import HomePage from './pages/HomePage';
+import MoviesPage from './pages/MoviesPage';
 import SearchPage from './pages/SearchPage';
 import TopRatedPage from './pages/TopRatedPage';
 import TrendingPage from './pages/TrendingPage';
@@ -27,6 +28,10 @@ const App = () => {
 
   if (route === '/upcoming' || route.startsWith('/upcoming/')) {
     return <UpcomingPage />;
+  }
+
+  if (route === '/movies' || route.startsWith('/movies/')) {
+    return <MoviesPage />;
   }
 
   if (route === '/top-rated' || route.startsWith('/top-rated/')) {
