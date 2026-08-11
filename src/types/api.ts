@@ -19,10 +19,24 @@ export interface ApiMovie {
   budget?: number;
   revenue?: number;
   popularity?: number;
+  production_companies?: ApiProductionCompany[];
+  spoken_languages?: ApiSpokenLanguage[];
 }
 
 export interface ApiGenre {
   id: EntityId;
+  name: string;
+}
+
+export interface ApiProductionCompany {
+  id: EntityId;
+  name: string;
+  logo_path?: string | null;
+  origin_country?: string;
+}
+
+export interface ApiSpokenLanguage {
+  iso_639_1: string;
   name: string;
 }
 

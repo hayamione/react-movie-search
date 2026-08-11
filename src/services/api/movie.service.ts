@@ -3,18 +3,21 @@ import type {
   ApiCredits,
   ApiMovie,
   ApiPaginatedResult,
+  ApiProductionCompany,
+  ApiSpokenLanguage,
   ApiVideo,
   ApiVideos,
 } from '../../types/api';
 import type { Credit, MovieCredits } from '../../types/credit';
 import type { Genre } from '../../types/genre';
-import type { Movie, MovieDetails } from '../../types/movie';
+import type { Movie, MovieDetails, ProductionCompany, SpokenLanguage } from '../../types/movie';
 import type { MovieVideo } from '../../types/video';
 import { buildImageUrl, request } from './client';
 import { ENDPOINTS } from './endpoints';
 
 const POSTER_SIZE = 'w342' as const;
 const PROFILE_SIZE = 'w185' as const;
+const LOGO_SIZE = 'w185' as const;
 
 export function mapApiMovie(movie: ApiMovie, genres: Genre[] = []): MovieDetails {
   const genreNames = new Map(genres.map((genre) => [genre.id, genre.name]));
@@ -45,6 +48,24 @@ export function mapApiMovie(movie: ApiMovie, genres: Genre[] = []): MovieDetails
     genres: mappedGenres,
     overview: movie.overview,
     tagline: movie.tagline,
+    productionCompanies: movie.production_companies?.map(mapApiProductionCompany),
+    spokenLanguages: movie.spoken_languages?.map(mapApiSpokenLanguage),
+  };
+}
+
+function mapApiProductionCompany(company: ApiProductionCompany): ProductionCompany {
+  return {
+    id: company.id,
+    name: company.name,
+    logoSrc: company.logo_path ? buildImageUrl(company.logo_path, LOGO_SIZE) : undefined,
+    originCountry: company.origin_country,
+  };
+}
+
+function mapApiSpokenLanguage(language: ApiSpokenLanguage): SpokenLanguage {
+  return {
+    code: language.iso_639_1,
+    name: language.name,
   };
 }
 

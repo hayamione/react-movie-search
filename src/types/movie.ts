@@ -13,6 +13,18 @@ export interface Movie {
   tagline?: string;
 }
 
+export interface ProductionCompany {
+  id: EntityId;
+  name: string;
+  logoSrc?: string;
+  originCountry?: string;
+}
+
+export interface SpokenLanguage {
+  code: string;
+  name: string;
+}
+
 export interface MovieDetails extends Movie {
   originalTitle?: string;
   originalLanguage?: string;
@@ -22,4 +34,6 @@ export interface MovieDetails extends Movie {
   revenue?: number;
   voteCount?: number;
   popularity?: number;
+  productionCompanies?: ProductionCompany[];
+  spokenLanguages?: SpokenLanguage[];
 }
