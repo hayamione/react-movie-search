@@ -3,22 +3,7 @@ import type { KeyboardEvent } from 'react';
 import { NavLink } from 'react-router-dom';
 import Button from '../components/ui/Button';
 import Container from '../components/ui/Container';
-
-interface NavItem {
-  label: string;
-  to: string;
-}
-
-const NAV_ITEMS: NavItem[] = [
-  { label: 'Home', to: '/' },
-  { label: 'Movies', to: '/movies' },
-  { label: 'Genres', to: '/genres' },
-  { label: 'Trending', to: '/trending' },
-  { label: 'Top Rated', to: '/top-rated' },
-  { label: 'Upcoming', to: '/upcoming' },
-  { label: 'Favorites', to: '/favorites' },
-  { label: 'Search', to: '/search' },
-];
+import { NAV_ITEMS } from '../constants/navigation';
 
 const linkClasses = (active: boolean) =>
   `rounded-xl px-3 py-2 text-sm font-medium transition-colors duration-fast ${
