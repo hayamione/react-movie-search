@@ -5,6 +5,7 @@ import GenresPage from './pages/GenresPage';
 import HomePage from './pages/HomePage';
 import MovieDetailsPage from './pages/MovieDetails/MovieDetailsPage';
 import MoviesPage from './pages/MoviesPage';
+import NotFoundPage from './pages/NotFoundPage';
 import SearchPage from './pages/SearchPage';
 import TopRatedPage from './pages/TopRatedPage';
 import TrendingPage from './pages/TrendingPage';
@@ -32,7 +33,7 @@ const App = () => (
     <Route path="/favorites" element={<FavoritesPage />} />
     <Route path="/search" element={<SearchPage />} />
     <Route path="/movie/:id" element={<MovieRoute />} />
-    <Route path="*" element={<HomePage />} />
+    <Route path="*" element={<NotFoundPage />} />
   </Routes>
 );
 
