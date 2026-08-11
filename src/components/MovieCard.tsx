@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import type { Movie } from '../types/movie';
 import GenreChip from './ui/GenreChip';
 import Poster from './ui/Poster';
@@ -49,7 +50,11 @@ const MovieCard = ({ movie, onClick, className = '' }: MovieCardProps) => {
     );
   }
 
-  return <article className={`${cardStyles} ${className}`}>{content}</article>;
+  return (
+    <Link to={`/movie/${movie.id}`} className={`${cardStyles} ${className}`}>
+      {content}
+    </Link>
+  );
 };
 
 export default MovieCard;

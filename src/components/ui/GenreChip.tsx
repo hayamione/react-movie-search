@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 interface GenreChipProps {
   label: string;
   active?: boolean;
@@ -20,9 +22,9 @@ const GenreChip = ({ label, active = false, onClick, href, className = '' }: Gen
 
   if (href) {
     return (
-      <a href={href} aria-current={active ? 'page' : undefined} className={chipStyles}>
+      <Link to={href} aria-current={active ? 'page' : undefined} className={chipStyles}>
         {label}
-      </a>
+      </Link>
     );
   }
 

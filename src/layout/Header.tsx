@@ -1,33 +1,24 @@
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import type { KeyboardEvent } from 'react';
+import { NavLink } from 'react-router-dom';
 import Button from '../components/ui/Button';
 import Container from '../components/ui/Container';
 
 interface NavItem {
   label: string;
-  href: string;
+  to: string;
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { label: 'Home', href: '/' },
-  { label: 'Movies', href: '/movies' },
-  { label: 'Genres', href: '/genres' },
-  { label: 'Trending', href: '/trending' },
-  { label: 'Top Rated', href: '/top-rated' },
-  { label: 'Upcoming', href: '/upcoming' },
-  { label: 'Favorites', href: '/favorites' },
-  { label: 'Search', href: '/search' },
+  { label: 'Home', to: '/' },
+  { label: 'Movies', to: '/movies' },
+  { label: 'Genres', to: '/genres' },
+  { label: 'Trending', to: '/trending' },
+  { label: 'Top Rated', to: '/top-rated' },
+  { label: 'Upcoming', to: '/upcoming' },
+  { label: 'Favorites', to: '/favorites' },
+  { label: 'Search', to: '/search' },
 ];
-
-const getActivePath = () => {
-  const base = import.meta.env.BASE_URL;
-  const cleanBase = base === '/' ? '' : base.replace(/\/$/, '');
-  const path = window.location.pathname;
-  return path.startsWith(cleanBase) ? path.slice(cleanBase.length) || '/' : path;
-};
-
-const isActive = (href: string, path: string) =>
-  href === '/' ? path === '/' : path === href || path.startsWith(`${href}/`);
 
 const linkClasses = (active: boolean) =>
   `rounded-xl px-3 py-2 text-sm font-medium transition-colors duration-fast ${
@@ -92,7 +83,6 @@ const Header = () => {
   const menuRef = useRef<HTMLDivElement>(null);
   const wasOpenRef = useRef(false);
   const menuId = useId();
-  const activePath = getActivePath();
 
   const close = useCallback(() => setOpen(false), []);
 
@@ -134,20 +124,20 @@ const Header = () => {
   return (
     <header className="sticky top-0 z-40 border-b border-slate-800 bg-slate-950/80 backdrop-blur-md">
       <Container className="flex h-16 items-center gap-4 sm:h-20">
-        <a href="/" className="text-lg font-bold tracking-tight text-slate-100">
+        <NavLink to="/" end className="text-lg font-bold tracking-tight text-slate-100">
           Movie<span className="text-accent">Search</span>
-        </a>
+        </NavLink>
 
         <nav aria-label="Primary" className="hidden items-center gap-1 lg:flex">
           {NAV_ITEMS.map((item) => (
-            <a
-              key={item.href}
-              href={item.href}
-              aria-current={isActive(item.href, activePath) ? 'page' : undefined}
-              className={linkClasses(isActive(item.href, activePath))}
+            <NavLink
+              key={item.to}
+              to={item.to}
+              end={item.to === '/'}
+              className={({ isActive }) => linkClasses(isActive)}
             >
               {item.label}
-            </a>
+            </NavLink>
           ))}
         </nav>
 
@@ -184,15 +174,16 @@ const Header = () => {
         <Container className="pb-4">
           <nav aria-label="Mobile" className="flex flex-col gap-1">
             {NAV_ITEMS.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
+              <NavLink
+                key={item.to}
+                to={item.to}
+                end={item.to === '/'}
                 tabIndex={open ? 0 : -1}
-                aria-current={isActive(item.href, activePath) ? 'page' : undefined}
-                className={linkClasses(isActive(item.href, activePath))}
+                onClick={close}
+                className={({ isActive }) => linkClasses(isActive)}
               >
                 {item.label}
-              </a>
+              </NavLink>
             ))}
           </nav>
         </Container>
