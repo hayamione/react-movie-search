@@ -4,6 +4,7 @@ import HomePage from './pages/HomePage';
 import SearchPage from './pages/SearchPage';
 import TopRatedPage from './pages/TopRatedPage';
 import TrendingPage from './pages/TrendingPage';
+import UpcomingPage from './pages/UpcomingPage';
 
 const getRoute = () => {
   const base = import.meta.env.BASE_URL;
@@ -22,6 +23,10 @@ const App = () => {
   const genreMatch = route.match(/^\/genre\/(\d+)\/?$/);
   if (genreMatch) {
     return <GenrePage genreId={Number(genreMatch[1])} />;
+  }
+
+  if (route === '/upcoming' || route.startsWith('/upcoming/')) {
+    return <UpcomingPage />;
   }
 
   if (route === '/top-rated' || route.startsWith('/top-rated/')) {
