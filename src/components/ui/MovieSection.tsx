@@ -1,7 +1,9 @@
 import type { Movie } from '../../types/movie';
 import MovieCard from '../MovieCard';
 import MovieCarousel from './MovieCarousel';
+import CarouselSkeleton from './CarouselSkeleton';
 import EmptyState from './EmptyState';
+import ErrorState from './ErrorState';
 import MovieGrid from './MovieGrid';
 import type { GridColumns } from './MovieGrid';
 import Section from './Section';
@@ -33,7 +35,11 @@ const MovieSection = ({
   if (loading) {
     return (
       <Section title={title} subtitle={subtitle}>
-        <SectionSkeleton showTitle={false} cards={cards} />
+        {horizontal ? (
+          <CarouselSkeleton variant="movie" cards={cards} />
+        ) : (
+          <SectionSkeleton showTitle={false} cards={cards} />
+        )}
       </Section>
     );
   }
@@ -41,10 +47,10 @@ const MovieSection = ({
   if (error) {
     return (
       <Section title={title} subtitle={subtitle}>
-        <EmptyState
-          tone="error"
+        <ErrorState
+          title={`Unable to load ${title.toLowerCase()}`}
+          description={`We could not fetch ${title.toLowerCase()} movies right now. Please try again.`}
           onRetry={onRetry}
-          description={`Unable to load ${title.toLowerCase()} right now.`}
         />
       </Section>
     );

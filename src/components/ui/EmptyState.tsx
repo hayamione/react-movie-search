@@ -13,6 +13,7 @@ interface EmptyStateProps {
   onRetry?: () => void;
   retryLabel?: string;
   className?: string;
+  illustration?: ReactNode;
 }
 
 const toneIconStyles: Record<EmptyStateTone, string> = {
@@ -39,6 +40,7 @@ const EmptyState = ({
   onRetry,
   retryLabel = 'Try again',
   className = '',
+  illustration,
 }: EmptyStateProps) => {
   const showAction = Boolean(action) || Boolean(onRetry);
 
@@ -46,6 +48,7 @@ const EmptyState = ({
     <div
       className={`flex flex-col items-center justify-center gap-4 rounded-2xl border border-dashed border-slate-800 bg-slate-900/50 px-6 py-16 text-center ${className}`}
     >
+      {illustration}
       <div
         className={`flex h-16 w-16 items-center justify-center rounded-2xl ${toneIconStyles[tone]}`}
       >

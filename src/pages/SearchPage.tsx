@@ -5,6 +5,7 @@ import type { Movie } from '../types/movie';
 import PageMeta from '../components/seo/PageMeta';
 import Button from '../components/ui/Button';
 import EmptyState from '../components/ui/EmptyState';
+import ErrorState from '../components/ui/ErrorState';
 import GenreChip from '../components/ui/GenreChip';
 import MovieCard from '../components/MovieCard';
 import MovieGrid from '../components/ui/MovieGrid';
@@ -242,12 +243,16 @@ const SearchPage = () => {
         ) : loading ? (
           <MovieGridSkeleton columns={5} count={10} />
         ) : error ? (
-          <EmptyState tone="error" onRetry={refetch} description="We couldn't load the search results." />
+          <ErrorState
+            title="Unable to load search results"
+            description="We could not fetch the search results. Please try again."
+            onRetry={refetch}
+          />
         ) : sortedMovies.length === 0 ? (
           <EmptyState
             icon={<NoResultsIllustration />}
-            title="No results found"
-            description={`We couldn't find anything matching "${submittedQuery}". Try different keywords or clear your filters.`}
+            title="No movies found"
+            description="Try another title or adjust your filters."
             action={
               hasActiveFilters ? (
                 <Button variant="secondary" onClick={clearFilters}>

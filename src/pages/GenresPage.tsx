@@ -1,6 +1,7 @@
 import PageMeta from '../components/seo/PageMeta';
 import ChipSkeleton from '../components/ui/ChipSkeleton';
 import EmptyState from '../components/ui/EmptyState';
+import ErrorState from '../components/ui/ErrorState';
 import GenreChip from '../components/ui/GenreChip';
 import Section from '../components/ui/Section';
 import { useGenres } from '../hooks/useGenres';
@@ -28,7 +29,11 @@ const GenresPage = () => {
         {loading ? (
           <ChipSkeleton count={12} />
         ) : error ? (
-          <EmptyState tone="error" onRetry={refetch} description="Unable to load genres right now." />
+          <ErrorState
+            title="Unable to load genres"
+            description="We could not fetch genres right now. Please try again."
+            onRetry={refetch}
+          />
         ) : genres.length === 0 ? (
           <EmptyState title="No genres available" />
         ) : (

@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import type { MovieCollectionEndpoint } from '../services/api/collection.service';
 import MovieCard from '../components/MovieCard';
 import EmptyState from '../components/ui/EmptyState';
+import ErrorState from '../components/ui/ErrorState';
 import MovieGrid from '../components/ui/MovieGrid';
 import MovieGridSkeleton from '../components/ui/MovieGridSkeleton';
 import PageHero from '../components/ui/PageHero';
@@ -52,10 +53,10 @@ const MovieCollectionPage = ({
         {loading ? (
           <MovieGridSkeleton columns={5} count={SKELETON_COUNT} />
         ) : error ? (
-          <EmptyState
-            tone="error"
+          <ErrorState
+            title={`Unable to load ${title.toLowerCase()} movies`}
+            description={`We could not fetch ${title.toLowerCase()} movies right now. Please try again.`}
             onRetry={refetch}
-            description={`Unable to load ${title.toLowerCase()} movies right now.`}
           />
         ) : movies.length === 0 ? (
           <EmptyState

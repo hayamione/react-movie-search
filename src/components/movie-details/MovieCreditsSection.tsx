@@ -1,11 +1,11 @@
 import type { EntityId } from '../../types/common';
 import type { Credit } from '../../types/credit';
 import { useMovieCredits } from '../../hooks/useMovieCredits';
-import Carousel from '../ui/Carousel';
+import CarouselSkeleton from '../ui/CarouselSkeleton';
+import CrewSkeleton from '../ui/CrewSkeleton';
 import EmptyState from '../ui/EmptyState';
-import PosterSkeleton from '../ui/PosterSkeleton';
+import ErrorState from '../ui/ErrorState';
 import Section from '../ui/Section';
-import Skeleton from '../ui/Skeleton';
 import CastCarousel from './CastCarousel';
 import CrewSection from './CrewSection';
 
@@ -13,45 +13,18 @@ interface MovieCreditsSectionProps {
   movieId?: EntityId;
 }
 
-const CastSkeleton = () => (
-  <Section title="Cast" subtitle="The actors who brought this story to life.">
-    <Carousel>
-      {Array.from({ length: 8 }).map((_, index) => (
-        <div key={index} className="w-36 shrink-0 sm:w-40">
-          <PosterSkeleton className="rounded-2xl" />
-          <div className="mt-3 space-y-2 px-0.5">
-            <Skeleton className="h-3 w-3/4" />
-            <Skeleton className="h-3 w-1/2" />
-          </div>
-        </div>
-      ))}
-    </Carousel>
-  </Section>
-);
-
-const CrewSkeleton = () => (
-  <Section title="Crew" subtitle="The people behind the scenes.">
-    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-      {Array.from({ length: 4 }).map((_, index) => (
-        <div key={index} className="rounded-2xl border border-slate-800 bg-slate-900 p-4">
-          <Skeleton className="h-3 w-16" />
-          <div className="mt-2">
-            <Skeleton className="h-4 w-2/3" />
-          </div>
-        </div>
-      ))}
-    </div>
-  </Section>
-);
-
 const MovieCreditsSection = ({ movieId }: MovieCreditsSectionProps) => {
   const { data: credits, loading, error, refetch } = useMovieCredits(movieId);
 
   if (loading) {
     return (
       <>
-        <CastSkeleton />
-        <CrewSkeleton />
+        <Section title="Cast" subtitle="The actors who brought this story to life.">
+          <CarouselSkeleton variant="cast" cards={8} />
+        </Section>
+        <Section title="Crew" subtitle="The people behind the scenes.">
+          <CrewSkeleton count={4} />
+        </Section>
       </>
     );
   }
@@ -59,10 +32,10 @@ const MovieCreditsSection = ({ movieId }: MovieCreditsSectionProps) => {
   if (error) {
     return (
       <Section title="Cast & Crew" subtitle="The people who brought this story to life.">
-        <EmptyState
-          tone="error"
+        <ErrorState
+          title="Unable to load the cast and crew"
+          description="We could not fetch the cast and crew for this movie. Please try again."
           onRetry={refetch}
-          description="Unable to load the cast and crew for this movie."
         />
       </Section>
     );

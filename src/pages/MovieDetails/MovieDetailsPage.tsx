@@ -1,6 +1,7 @@
 import type { EntityId } from '../../types/common';
 import { useMovieDetails } from '../../hooks/useMovieDetails';
 import PageMeta from '../../components/seo/PageMeta';
+import MovieDetailsSkeleton from '../../components/ui/MovieDetailsSkeleton';
 import MovieDetailsHero from '../../components/movie-details/MovieDetailsHero';
 import MovieMetadataSection from '../../components/movie-details/MovieMetadataSection';
 import MovieCreditsSection from '../../components/movie-details/MovieCreditsSection';
@@ -15,6 +16,10 @@ interface MovieDetailsPageProps {
 const MovieDetailsPage = ({ movieId }: MovieDetailsPageProps) => {
   const { data: movie, loading, error, refetch } = useMovieDetails(movieId);
 
+  if (loading) {
+    return <MovieDetailsSkeleton />;
+  }
+
   return (
     <div className="flex flex-col gap-12 sm:gap-16">
       <PageMeta
@@ -23,7 +28,7 @@ const MovieDetailsPage = ({ movieId }: MovieDetailsPageProps) => {
         image={movie?.backdropSrc ?? movie?.posterSrc}
       />
 
-      <MovieDetailsHero movie={movie} loading={loading} error={error} onRetry={refetch} />
+      <MovieDetailsHero movie={movie} error={error} onRetry={refetch} />
 
       <MovieMetadataSection movie={movie} />
 

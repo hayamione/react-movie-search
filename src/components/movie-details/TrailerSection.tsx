@@ -2,6 +2,7 @@ import type { EntityId } from '../../types/common';
 import type { MovieVideo } from '../../types/video';
 import { useMovieVideos } from '../../hooks/useMovieVideos';
 import EmptyState from '../ui/EmptyState';
+import ErrorState from '../ui/ErrorState';
 import Section from '../ui/Section';
 import Skeleton from '../ui/Skeleton';
 
@@ -29,10 +30,10 @@ const TrailerSection = ({ movieId }: TrailerSectionProps) => {
   if (error) {
     return (
       <Section title="Trailer" subtitle="Watch the official trailer.">
-        <EmptyState
-          tone="error"
+        <ErrorState
+          title="Unable to load the trailer"
+          description="We could not fetch the trailer for this movie. Please try again."
           onRetry={refetch}
-          description="Unable to load the trailer for this movie."
         />
       </Section>
     );

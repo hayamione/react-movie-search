@@ -12,7 +12,7 @@ const FavoritesPage = () => {
       <EmptyState
         icon={<BookmarkPlus className="h-8 w-8" aria-hidden="true" strokeWidth={1.75} />}
         title="No favorites yet"
-        description="You haven't added any favorites yet."
+        description="Save movies to build your personal watchlist."
         action={
           <Button onClick={() => navigate('/movies')}>Browse Movies</Button>
         }

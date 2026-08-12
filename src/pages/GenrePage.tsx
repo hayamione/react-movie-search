@@ -1,12 +1,13 @@
 import type { Movie } from '../types/movie';
 import PageMeta from '../components/seo/PageMeta';
 import EmptyState from '../components/ui/EmptyState';
+import ErrorState from '../components/ui/ErrorState';
 import GenreChip from '../components/ui/GenreChip';
 import HeroSkeleton from '../components/ui/HeroSkeleton';
 import MovieSection from '../components/ui/MovieSection';
+import PageHeroSkeleton from '../components/ui/PageHeroSkeleton';
 import Poster from '../components/ui/Poster';
 import RatingBadge from '../components/ui/RatingBadge';
-import Skeleton from '../components/ui/Skeleton';
 import { useGenres } from '../hooks/useGenres';
 import { useGenrePage } from '../hooks/useGenrePage';
 
@@ -16,7 +17,7 @@ interface GenrePageProps {
 
 const GenrePageSkeleton = () => (
   <div className="flex flex-col gap-12 sm:gap-16">
-    <Skeleton className="h-40 rounded-2xl" />
+    <PageHeroSkeleton />
     <HeroSkeleton />
   </div>
 );
@@ -105,10 +106,10 @@ const GenrePage = ({ genreId }: GenrePageProps) => {
 
   if (genresError) {
     return (
-      <EmptyState
-        tone="error"
+      <ErrorState
+        title="Unable to load genre information"
+        description="We could not fetch genre information. Please try again."
         onRetry={refetchGenres}
-        description="Unable to load genre information."
       />
     );
   }
@@ -145,10 +146,10 @@ const GenrePage = ({ genreId }: GenrePageProps) => {
       </header>
 
       {error ? (
-        <EmptyState
-          tone="error"
+        <ErrorState
+          title={`Unable to load ${genre.name} movies`}
+          description={`We could not fetch ${genre.name.toLowerCase()} movies right now. Please try again.`}
           onRetry={refetch}
-          description={`Unable to load ${genre.name} movies.`}
         />
       ) : (
         <>

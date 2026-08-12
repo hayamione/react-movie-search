@@ -3,6 +3,7 @@ import PageMeta from '../components/seo/PageMeta';
 import Button from '../components/ui/Button';
 import ChipSkeleton from '../components/ui/ChipSkeleton';
 import EmptyState from '../components/ui/EmptyState';
+import ErrorState from '../components/ui/ErrorState';
 import GenreChip from '../components/ui/GenreChip';
 import HeroSkeleton from '../components/ui/HeroSkeleton';
 import MovieSection from '../components/ui/MovieSection';
@@ -132,10 +133,10 @@ const HomePage = () => {
       {trendingLoading ? (
         <HeroSkeleton />
       ) : trendingError ? (
-        <EmptyState
-          tone="error"
+        <ErrorState
+          title="Unable to load the featured movie"
+          description="We could not fetch the featured movie right now. Please try again."
           onRetry={refetchTrending}
-          description="Unable to load the featured movie right now."
         />
       ) : featured ? (
         <HeroSection movie={featured} />
@@ -185,7 +186,11 @@ const HomePage = () => {
         {genresLoading ? (
           <ChipSkeleton count={8} />
         ) : genresError ? (
-          <EmptyState tone="error" onRetry={refetchGenres} description="Unable to load genres right now." />
+          <ErrorState
+            title="Unable to load genres"
+            description="We could not fetch genres right now. Please try again."
+            onRetry={refetchGenres}
+          />
         ) : genres.length === 0 ? (
           <EmptyState title="No genres available right now." />
         ) : (
