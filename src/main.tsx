@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter } from 'react-router-dom';
 import './index.css';
+import { FavoritesProvider } from './favorites/FavoritesContext';
 import AppLayout from './layout/AppLayout';
 
 const savedRedirect = sessionStorage.getItem('gh:redirect');
@@ -17,7 +18,9 @@ if (rootElement) {
     <React.StrictMode>
       <HelmetProvider>
         <BrowserRouter basename={import.meta.env.BASE_URL}>
-          <AppLayout />
+          <FavoritesProvider>
+            <AppLayout />
+          </FavoritesProvider>
         </BrowserRouter>
       </HelmetProvider>
     </React.StrictMode>

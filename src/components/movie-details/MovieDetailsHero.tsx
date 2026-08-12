@@ -3,23 +3,11 @@ import type { MovieDetails } from '../../types/movie';
 import Button from '../ui/Button';
 import EmptyState from '../ui/EmptyState';
 import ErrorState from '../ui/ErrorState';
+import FavoriteButton from '../ui/FavoriteButton';
 import GenreChip from '../ui/GenreChip';
 import Poster from '../ui/Poster';
 import RatingBadge from '../ui/RatingBadge';
 import { formatRuntime } from '../../utils/format';
-
-const HeartIcon = ({ filled = false }: { filled?: boolean }) => (
-  <svg
-    className={`h-4 w-4 ${filled ? 'fill-current' : 'fill-none stroke-current'}`}
-    viewBox="0 0 24 24"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    aria-hidden="true"
-  >
-    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-  </svg>
-);
 
 const PlayIcon = () => (
   <svg className="h-4 w-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
@@ -38,11 +26,9 @@ interface MovieDetailsHeroProps {
 }
 
 const MovieDetailsHero = ({ movie, error, onRetry }: MovieDetailsHeroProps) => {
-  const [favorite, setFavorite] = useState(false);
   const [backdropErrored, setBackdropErrored] = useState(false);
 
   useEffect(() => {
-    setFavorite(false);
     setBackdropErrored(false);
   }, [movie?.id]);
 
@@ -142,15 +128,7 @@ const MovieDetailsHero = ({ movie, error, onRetry }: MovieDetailsHeroProps) => {
           )}
 
           <div className="mt-2 flex flex-wrap items-center gap-3">
-            <Button
-              variant={favorite ? 'primary' : 'secondary'}
-              size="lg"
-              aria-pressed={favorite}
-              onClick={() => setFavorite((prev) => !prev)}
-            >
-              <HeartIcon filled={favorite} />
-              {favorite ? 'Favorited' : 'Add to favorites'}
-            </Button>
+            <FavoriteButton movie={movie} size="lg" />
             <Button variant="ghost" size="lg" onClick={scrollToTrailer}>
               <PlayIcon />
               Watch Trailer

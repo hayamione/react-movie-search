@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import type { Movie } from '../types/movie';
+import FavoriteButton from './ui/FavoriteButton';
 import GenreChip from './ui/GenreChip';
 import Poster from './ui/Poster';
 import RatingBadge from './ui/RatingBadge';
@@ -18,7 +19,14 @@ const MovieCard = ({ movie, onClick, className = '' }: MovieCardProps) => {
 
   const content = (
     <>
-      <Poster src={movie.posterSrc} alt={movie.title} />
+      <div className="relative">
+        <Poster src={movie.posterSrc} alt={movie.title} />
+        <FavoriteButton
+          movie={movie}
+          variant="card"
+          className="absolute right-2.5 top-2.5 z-10"
+        />
+      </div>
       <div className="flex flex-1 flex-col gap-2.5 p-4">
         <h3 className="line-clamp-2 min-h-[2.75rem] text-balance font-semibold leading-snug text-slate-100">
           {movie.title}

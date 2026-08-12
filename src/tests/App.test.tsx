@@ -3,6 +3,7 @@ import { expect, test, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { HelmetProvider } from 'react-helmet-async';
 import { MemoryRouter } from 'react-router-dom';
+import { FavoritesProvider } from '../favorites/FavoritesContext';
 import App from '../App';
 
 vi.mock('../hooks/useMovies', () => ({
@@ -55,7 +56,9 @@ test('renders the home page with the featured movie and all sections', () => {
   render(
     <HelmetProvider context={{}}>
       <MemoryRouter>
-        <App />
+        <FavoritesProvider>
+          <App />
+        </FavoritesProvider>
       </MemoryRouter>
     </HelmetProvider>
   );
