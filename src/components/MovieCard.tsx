@@ -1,9 +1,9 @@
-import { Link } from 'react-router-dom';
-import type { Movie } from '../types/movie';
-import FavoriteButton from './ui/FavoriteButton';
-import GenreChip from './ui/GenreChip';
-import Poster from './ui/Poster';
-import RatingBadge from './ui/RatingBadge';
+import { Link } from "react-router-dom";
+import type { Movie } from "../types/movie";
+import FavoriteButton from "./ui/FavoriteButton";
+import GenreChip from "./ui/GenreChip";
+import Poster from "./ui/Poster";
+import RatingBadge from "./ui/RatingBadge";
 
 interface MovieCardProps {
   movie: Movie;
@@ -12,9 +12,9 @@ interface MovieCardProps {
 }
 
 const cardStyles =
-  'group flex h-full flex-col overflow-hidden rounded-2xl bg-slate-900 shadow-soft transition-all duration-smooth hover:-translate-y-1 hover:shadow-raised focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 cursor-pointer';
+  "group flex h-full flex-col overflow-hidden rounded-2xl bg-slate-900 shadow-soft transition-all duration-smooth hover:-translate-y-1 hover:shadow-raised focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 cursor-pointer";
 
-const MovieCard = ({ movie, onClick, className = '' }: MovieCardProps) => {
+const MovieCard = ({ movie, onClick, className = "" }: MovieCardProps) => {
   const releaseYear = movie.releaseDate?.slice(0, 4);
 
   const content = (
@@ -59,7 +59,11 @@ const MovieCard = ({ movie, onClick, className = '' }: MovieCardProps) => {
   }
 
   return (
-    <Link to={`/movie/${movie.id}`} className={`${cardStyles} ${className}`}>
+    <Link
+      to={`/movie/${movie.id}`}
+      className={`${cardStyles} ${className}`}
+      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+    >
       {content}
     </Link>
   );

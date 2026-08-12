@@ -1,5 +1,7 @@
+import { useEffect } from 'react';
 import type { EntityId } from '../../types/common';
 import { useMovieDetails } from '../../hooks/useMovieDetails';
+import { useRecentlyViewed } from '../../recently-viewed/RecentlyViewedContext';
 import PageMeta from '../../components/seo/PageMeta';
 import MovieDetailsSkeleton from '../../components/ui/MovieDetailsSkeleton';
 import MovieDetailsHero from '../../components/movie-details/MovieDetailsHero';
@@ -15,6 +17,13 @@ interface MovieDetailsPageProps {
 
 const MovieDetailsPage = ({ movieId }: MovieDetailsPageProps) => {
   const { data: movie, loading, error, refetch } = useMovieDetails(movieId);
+  const { addRecent } = useRecentlyViewed();
+
+  useEffect(() => {
+    if (movie) {
+      addRecent(movie);
+    }
+  }, [movie, addRecent]);
 
   if (loading) {
     return <MovieDetailsSkeleton />;

@@ -9,6 +9,7 @@ import HeroSkeleton from '../components/ui/HeroSkeleton';
 import MovieSection from '../components/ui/MovieSection';
 import Poster from '../components/ui/Poster';
 import RatingBadge from '../components/ui/RatingBadge';
+import RecentlyViewedCarousel from '../components/ui/RecentlyViewedCarousel';
 import SearchBar from '../components/ui/SearchBar';
 import Section from '../components/ui/Section';
 import { useGenres } from '../hooks/useGenres';
@@ -143,6 +144,8 @@ const HomePage = () => {
       ) : (
         <EmptyState title="No featured movie available right now." />
       )}
+
+      <RecentlyViewedCarousel />
 
       <MovieSection
         title="Trending Today"

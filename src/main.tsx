@@ -4,6 +4,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter } from 'react-router-dom';
 import './index.css';
 import { FavoritesProvider } from './favorites/FavoritesContext';
+import { RecentlyViewedProvider } from './recently-viewed/RecentlyViewedContext';
 import AppLayout from './layout/AppLayout';
 
 const savedRedirect = sessionStorage.getItem('gh:redirect');
@@ -19,7 +20,9 @@ if (rootElement) {
       <HelmetProvider>
         <BrowserRouter basename={import.meta.env.BASE_URL}>
           <FavoritesProvider>
-            <AppLayout />
+            <RecentlyViewedProvider>
+              <AppLayout />
+            </RecentlyViewedProvider>
           </FavoritesProvider>
         </BrowserRouter>
       </HelmetProvider>
