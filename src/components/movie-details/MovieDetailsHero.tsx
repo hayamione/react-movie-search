@@ -15,6 +15,23 @@ const PlayIcon = () => (
   </svg>
 );
 
+const ShareIcon = () => (
+  <svg
+    className="h-4 w-4"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8" />
+    <polyline points="16 6 12 2 8 6" />
+    <line x1="12" y1="2" x2="12" y2="15" />
+  </svg>
+);
+
 const scrollToTrailer = () => {
   document.getElementById('trailer')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 };
@@ -27,10 +44,52 @@ interface MovieDetailsHeroProps {
 
 const MovieDetailsHero = ({ movie, error, onRetry }: MovieDetailsHeroProps) => {
   const [backdropErrored, setBackdropErrored] = useState(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   useEffect(() => {
     setBackdropErrored(false);
   }, [movie?.id]);
+
+  useEffect(() => {
+    if (!toastMessage) return;
+    const timer = setTimeout(() => {
+      setToastMessage(null);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [toastMessage]);
+
+  const handleShare = async () => {
+    if (!movie) return;
+    const shareUrl = window.location.href;
+    const shareData = {
+      title: movie.title,
+      text: movie.tagline || movie.overview || `Check out ${movie.title} on MovieSearch.`,
+      url: shareUrl,
+    };
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+        return;
+      } catch (err) {
+        if ((err as Error).name === 'AbortError') {
+          return; // user cancelled share sheet
+        }
+      }
+    }
+
+    // Fallback to clipboard
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(shareUrl);
+        setToastMessage('Movie link copied.');
+      } else {
+        setToastMessage('Share unavailable.');
+      }
+    } catch {
+      setToastMessage('Share unavailable.');
+    }
+  };
 
   if (error) {
     return (
@@ -133,7 +192,17 @@ const MovieDetailsHero = ({ movie, error, onRetry }: MovieDetailsHeroProps) => {
               <PlayIcon />
               Watch Trailer
             </Button>
+            <Button variant="ghost" size="lg" onClick={handleShare} aria-label="Share movie">
+              <ShareIcon />
+              Share
+            </Button>
           </div>
+
+          {toastMessage && (
+            <div className="fixed bottom-6 right-6 z-50 rounded-xl border border-slate-700 bg-slate-900/95 px-4 py-3 text-sm font-medium text-slate-100 shadow-overlay backdrop-blur-md animate-in fade-in slide-in-from-bottom-3 duration-200">
+              {toastMessage}
+            </div>
+          )}
         </div>
       </div>
     </section>
