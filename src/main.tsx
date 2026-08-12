@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import './index.css';
 import { FavoritesProvider } from './favorites/FavoritesContext';
 import { RecentlyViewedProvider } from './recently-viewed/RecentlyViewedContext';
+import { ThemeProvider } from './theme/ThemeContext';
 import AppLayout from './layout/AppLayout';
 
 const savedRedirect = sessionStorage.getItem('gh:redirect');
@@ -21,7 +22,9 @@ if (rootElement) {
         <BrowserRouter basename={import.meta.env.BASE_URL}>
           <FavoritesProvider>
             <RecentlyViewedProvider>
-              <AppLayout />
+              <ThemeProvider>
+                <AppLayout />
+              </ThemeProvider>
             </RecentlyViewedProvider>
           </FavoritesProvider>
         </BrowserRouter>

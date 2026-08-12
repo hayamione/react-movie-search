@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom';
 import Button from '../components/ui/Button';
 import Container from '../components/ui/Container';
 import { NAV_ITEMS } from '../constants/navigation';
+import { useTheme } from '../theme/ThemeContext';
 
 const linkClasses = (active: boolean) =>
   `rounded-xl px-3 py-2 text-sm font-medium transition-colors duration-fast ${
@@ -56,11 +57,133 @@ const SunIcon = () => (
   </svg>
 );
 
-const ThemeTogglePlaceholder = () => (
-  <Button variant="ghost" size="sm" aria-label="Toggle theme">
-    <SunIcon />
-  </Button>
+const MoonIcon = () => (
+  <svg
+    className="h-5 w-5"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+  </svg>
 );
+
+const SystemIcon = () => (
+  <svg
+    className="h-5 w-5"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+    <path d="M8 21h8M12 17v4" />
+  </svg>
+);
+
+const ThemeSelector = () => {
+  const { theme, resolvedTheme, setTheme } = useTheme();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setMenuOpen(false);
+      }
+    };
+    if (menuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [menuOpen]);
+
+  const currentIcon =
+    theme === 'light' ? (
+      <SunIcon />
+    ) : theme === 'dark' ? (
+      <MoonIcon />
+    ) : resolvedTheme === 'dark' ? (
+      <MoonIcon />
+    ) : (
+      <SunIcon />
+    );
+
+  return (
+    <div className="relative" ref={menuRef}>
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={() => setMenuOpen((prev) => !prev)}
+        aria-label="Toggle theme menu"
+        aria-expanded={menuOpen}
+        className="gap-2"
+      >
+        {currentIcon}
+        <span className="hidden text-xs capitalize text-slate-400 md:inline">{theme}</span>
+      </Button>
+
+      {menuOpen && (
+        <div className="absolute right-0 mt-2 w-36 rounded-xl border border-slate-800 bg-slate-900 p-1 shadow-raised z-50">
+          <button
+            type="button"
+            onClick={() => {
+              setTheme('light');
+              setMenuOpen(false);
+            }}
+            className={`flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-xs font-medium transition-colors ${
+              theme === 'light'
+                ? 'bg-accent/15 text-accent font-semibold'
+                : 'text-slate-300 hover:bg-slate-800 hover:text-slate-100'
+            }`}
+          >
+            <SunIcon />
+            <span>Light</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setTheme('dark');
+              setMenuOpen(false);
+            }}
+            className={`flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-xs font-medium transition-colors ${
+              theme === 'dark'
+                ? 'bg-accent/15 text-accent font-semibold'
+                : 'text-slate-300 hover:bg-slate-800 hover:text-slate-100'
+            }`}
+          >
+            <MoonIcon />
+            <span>Dark</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setTheme('system');
+              setMenuOpen(false);
+            }}
+            className={`flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-xs font-medium transition-colors ${
+              theme === 'system'
+                ? 'bg-accent/15 text-accent font-semibold'
+                : 'text-slate-300 hover:bg-slate-800 hover:text-slate-100'
+            }`}
+          >
+            <SystemIcon />
+            <span>System</span>
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
 
 const Header = () => {
   const [open, setOpen] = useState(false);
@@ -127,11 +250,11 @@ const Header = () => {
         </nav>
 
         <div className="ml-auto hidden items-center gap-2 lg:flex">
-          <ThemeTogglePlaceholder />
+          <ThemeSelector />
         </div>
 
         <div className="ml-auto flex items-center gap-2 lg:hidden">
-          <ThemeTogglePlaceholder />
+          <ThemeSelector />
           <Button
             ref={toggleRef}
             type="button"
