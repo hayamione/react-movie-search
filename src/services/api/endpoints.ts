@@ -9,6 +9,7 @@ export const ENDPOINTS = {
     videos: (id: number | string) => `/movie/${id}/videos`,
     recommendations: (id: number | string) => `/movie/${id}/recommendations`,
     similar: (id: number | string) => `/movie/${id}/similar`,
+    watchProviders: (id: number | string) => `/movie/${id}/watch/providers`,
   },
   trending: {
     movies: (timeWindow: 'day' | 'week' = 'week') => `/trending/movie/${timeWindow}`,

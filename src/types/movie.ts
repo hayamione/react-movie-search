@@ -25,6 +25,18 @@ export interface SpokenLanguage {
   name: string;
 }
 
+export interface WatchProvider {
+  id: number;
+  name: string;
+  logoSrc?: string;
+  type: 'stream' | 'rent' | 'buy';
+}
+
+export interface MovieWatchProviders {
+  link?: string;
+  providers: WatchProvider[];
+}
+
 export interface MovieDetails extends Movie {
   originalTitle?: string;
   originalLanguage?: string;
@@ -36,4 +48,5 @@ export interface MovieDetails extends Movie {
   popularity?: number;
   productionCompanies?: ProductionCompany[];
   spokenLanguages?: SpokenLanguage[];
+  watchProviders?: MovieWatchProviders;
 }

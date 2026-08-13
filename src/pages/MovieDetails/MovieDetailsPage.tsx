@@ -10,6 +10,7 @@ import MovieCreditsSection from '../../components/movie-details/MovieCreditsSect
 import MovieExtrasSection from '../../components/movie-details/MovieExtrasSection';
 import SimilarMoviesSection from '../../components/movie-details/SimilarMoviesSection';
 import RecommendationsSection from '../../components/movie-details/RecommendationsSection';
+import WhereToWatchSection from '../../components/movie-details/WhereToWatchSection';
 
 interface MovieDetailsPageProps {
   movieId?: EntityId;
@@ -38,6 +39,8 @@ const MovieDetailsPage = ({ movieId }: MovieDetailsPageProps) => {
       />
 
       <MovieDetailsHero movie={movie} error={error} onRetry={refetch} />
+
+      <WhereToWatchSection movie={movie} />
 
       <MovieMetadataSection movie={movie} />
 

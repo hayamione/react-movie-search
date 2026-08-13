@@ -7,10 +7,11 @@ import type {
   ApiSpokenLanguage,
   ApiVideo,
   ApiVideos,
+  ApiWatchProvidersResponse,
 } from '../../types/api';
 import type { Credit, MovieCredits } from '../../types/credit';
 import type { Genre } from '../../types/genre';
-import type { Movie, MovieDetails, ProductionCompany, SpokenLanguage } from '../../types/movie';
+import type { Movie, MovieDetails, MovieWatchProviders, ProductionCompany, SpokenLanguage, WatchProvider } from '../../types/movie';
 import type { MovieVideo } from '../../types/video';
 import { buildImageUrl, request } from './client';
 import { ENDPOINTS } from './endpoints';
@@ -73,8 +74,49 @@ export async function getMovieDetails(
   id: number,
   signal?: AbortSignal
 ): Promise<MovieDetails> {
-  const data = await request<ApiMovie>(ENDPOINTS.movie.detail(id), { signal });
-  return mapApiMovie(data);
+  const [movieData, providersData] = await Promise.all([
+    request<ApiMovie>(ENDPOINTS.movie.detail(id), { signal }),
+    request<ApiWatchProvidersResponse>(ENDPOINTS.movie.watchProviders(id), { signal }).catch(() => null),
+  ]);
+
+  const movie = mapApiMovie(movieData);
+  if (providersData && providersData.results) {
+    // Check user region or default to US / first available region
+    const regionKey = Object.keys(providersData.results)[0];
+    if (regionKey) {
+      const region = providersData.results[regionKey];
+      const allProviders: WatchProvider[] = [];
+      const seenIds = new Set<number>();
+
+      const addList = (list: typeof region.flatrate, type: WatchProvider['type']) => {
+        if (!list) return;
+        for (const p of list) {
+          if (!seenIds.has(p.provider_id)) {
+            seenIds.add(p.provider_id);
+            allProviders.push({
+              id: p.provider_id,
+              name: p.provider_name,
+              logoSrc: p.logo_path ? buildImageUrl(p.logo_path, LOGO_SIZE) : undefined,
+              type,
+            });
+          }
+        }
+      };
+
+      addList(region.flatrate, 'stream');
+      addList(region.rent, 'rent');
+      addList(region.buy, 'buy');
+
+      if (allProviders.length > 0) {
+        movie.watchProviders = {
+          link: region.link,
+          providers: allProviders,
+        };
+      }
+    }
+  }
+
+  return movie;
 }
 
 export async function getRecommendedMovies(

@@ -91,6 +91,25 @@ export interface ApiVideos {
   results: ApiVideo[];
 }
 
+export interface ApiWatchProvider {
+  provider_id: number;
+  provider_name: string;
+  logo_path?: string | null;
+  display_priority?: number;
+}
+
+export interface ApiWatchProviderRegion {
+  link?: string;
+  flatrate?: ApiWatchProvider[];
+  rent?: ApiWatchProvider[];
+  buy?: ApiWatchProvider[];
+}
+
+export interface ApiWatchProvidersResponse {
+  id: number;
+  results: Record<string, ApiWatchProviderRegion>;
+}
+
 export interface Rating {
   Source: string;
   Value: string;

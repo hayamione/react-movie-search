@@ -6,7 +6,8 @@ All notable changes to this project will be documented in this file.
 - Added persistent favorites via `localStorage` with quick toggle actions
 - Added recently viewed movies tracking and carousel on the home page
 - Added persistent theme switching (`Light`, `Dark`, `System`) supporting `prefers-color-scheme`
-- Integrated streaming watch providers on the Movie Details page
+- Added movie sharing with native `navigator.share` and clipboard fallback with toast feedback
+- Added streaming watch providers on the Movie Details page (`WhereToWatchSection` & `ProviderCard`)
 
 ## v2.0
 - Migrated build tooling from Create React App to Vite for lightning-fast bundling
