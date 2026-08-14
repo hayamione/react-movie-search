@@ -8,6 +8,8 @@ All notable changes to this project will be documented in this file.
 - Added persistent theme switching (`Light`, `Dark`, `System`) supporting `prefers-color-scheme`
 - Added movie sharing with native `navigator.share` and clipboard fallback with toast feedback
 - Added streaming watch providers on the Movie Details page (`WhereToWatchSection` & `ProviderCard`)
+- Added global Command Palette (`Ctrl+K` / `⌘+K`) for instant movie search from any page
+- Fixed and enhanced Home page and Search page search bars with live query synchronization (`?q=...`)
 
 ## v2.0
 - Migrated build tooling from Create React App to Vite for lightning-fast bundling

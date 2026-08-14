@@ -1,12 +1,26 @@
+import { useEffect, useState } from 'react';
 import type { PropsWithChildren } from 'react';
 import { useLocation } from 'react-router-dom';
 import { motion } from 'motion/react';
 import Container from '../components/ui/Container';
+import CommandPalette from '../components/ui/CommandPalette';
 import Footer from './Footer';
 import Header from './Header';
 
 const MainLayout = ({ children }: PropsWithChildren) => {
   const { pathname } = useLocation();
+  const [searchOpen, setSearchOpen] = useState(false);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setSearchOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -16,7 +30,7 @@ const MainLayout = ({ children }: PropsWithChildren) => {
       >
         Skip to content
       </a>
-      <Header />
+      <Header onOpenSearch={() => setSearchOpen(true)} />
       <main id="main-content" className="flex-1">
         <Container className="py-8 sm:py-12 lg:py-16">
           <motion.div
@@ -30,6 +44,7 @@ const MainLayout = ({ children }: PropsWithChildren) => {
         </Container>
       </main>
       <Footer />
+      <CommandPalette isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
     </div>
   );
 };

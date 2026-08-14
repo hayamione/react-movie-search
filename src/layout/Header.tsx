@@ -41,6 +41,22 @@ const CloseIcon = () => (
   </svg>
 );
 
+const SearchButtonIcon = () => (
+  <svg
+    className="h-5 w-5"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <circle cx="11" cy="11" r="7" />
+    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+  </svg>
+);
+
 const SunIcon = () => (
   <svg
     className="h-5 w-5"
@@ -185,7 +201,11 @@ const ThemeSelector = () => {
   );
 };
 
-const Header = () => {
+interface HeaderProps {
+  onOpenSearch: () => void;
+}
+
+const Header = ({ onOpenSearch }: HeaderProps) => {
   const [open, setOpen] = useState(false);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -250,10 +270,31 @@ const Header = () => {
         </nav>
 
         <div className="ml-auto hidden items-center gap-2 lg:flex">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onOpenSearch}
+            aria-label="Search movies (Ctrl+K)"
+            className="gap-2 text-slate-400 hover:text-slate-100"
+          >
+            <SearchButtonIcon />
+            <span className="hidden text-xs text-slate-400 xl:inline">Search...</span>
+            <kbd className="hidden rounded border border-slate-700 bg-slate-900 px-1.5 py-0.5 text-[10px] text-slate-400 xl:inline">
+              ⌘ K
+            </kbd>
+          </Button>
           <ThemeSelector />
         </div>
 
         <div className="ml-auto flex items-center gap-2 lg:hidden">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onOpenSearch}
+            aria-label="Search movies"
+          >
+            <SearchButtonIcon />
+          </Button>
           <ThemeSelector />
           <Button
             ref={toggleRef}

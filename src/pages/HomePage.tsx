@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import type { Movie } from '../types/movie';
 import PageMeta from '../components/seo/PageMeta';
 import Button from '../components/ui/Button';
@@ -26,6 +28,14 @@ interface HeroSectionProps {
 
 const HeroSection = ({ movie }: HeroSectionProps) => {
   const releaseYear = movie.releaseDate?.slice(0, 4);
+  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleSearchSubmit = () => {
+    if (searchQuery.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
 
   return (
     <section className="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900">
@@ -88,7 +98,14 @@ const HeroSection = ({ movie }: HeroSectionProps) => {
       </div>
 
       <div className="border-t border-slate-800 p-6 sm:p-8 lg:p-12">
-        <SearchBar placeholder="Search for movies..." className="mx-auto max-w-2xl" />
+        <SearchBar
+          value={searchQuery}
+          onChange={setSearchQuery}
+          onSubmit={handleSearchSubmit}
+          placeholder="Search movies or press Ctrl+K / ⌘+K..."
+          size="lg"
+          className="mx-auto max-w-2xl"
+        />
       </div>
     </section>
   );
