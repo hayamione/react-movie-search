@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 - Added streaming watch providers on the Movie Details page (`WhereToWatchSection` & `ProviderCard`)
 - Added global Command Palette (`Ctrl+K` / `⌘+K`) for instant movie search from any page
 - Fixed and enhanced Home page and Search page search bars with live query synchronization (`?q=...`)
+- Added smooth auto-scroll to search results upon search query submission on both desktop and mobile
 
 ## v2.0
 - Migrated build tooling from Create React App to Vite for lightning-fast bundling

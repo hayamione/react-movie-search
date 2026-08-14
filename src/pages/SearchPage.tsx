@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { PropsWithChildren } from "react";
 import { useSearchParams } from "react-router-dom";
 import { SearchX } from "lucide-react";
@@ -142,6 +142,14 @@ const SearchPage = () => {
     return () => window.clearTimeout(timer);
   }, [query, searchParams, setSearchParams]);
 
+  const resultsRef = useRef<HTMLDivElement>(null);
+
+  const scrollToResults = () => {
+    setTimeout(() => {
+      resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 100);
+  };
+
   const handleSubmit = () => {
     const trimmed = query.trim();
     if (!trimmed) {
@@ -150,6 +158,7 @@ const SearchPage = () => {
     setSubmittedQuery(trimmed);
     setPage(1);
     setSearchParams({ q: trimmed }, { replace: true });
+    scrollToResults();
   };
 
   const handlePopularSearch = (term: string) => {
@@ -157,6 +166,7 @@ const SearchPage = () => {
     setSubmittedQuery(term);
     setPage(1);
     setSearchParams({ q: term }, { replace: true });
+    scrollToResults();
   };
 
   const handleFilterChange =
@@ -281,57 +291,59 @@ const SearchPage = () => {
       )}
 
       {hasSearched && (
-        <Section
-          title="Results"
-          subtitle={
-            hasSearched && !loading && !error && sortedMovies.length > 0
-              ? `${totalResults.toLocaleString()} ${totalResults === 1 ? "result" : "results"} found`
-              : undefined
-          }
-        >
-          {!hasSearched ? (
-            <EmptyState
-              icon={<NoResultsIllustration />}
-              title="Search to begin"
-              description="Type a movie title above or choose one of the popular searches to get started."
-            />
-          ) : loading ? (
-            <MovieGridSkeleton columns={5} count={10} />
-          ) : error ? (
-            <ErrorState
-              title="Unable to load search results"
-              description="We could not fetch the search results. Please try again."
-              onRetry={refetch}
-            />
-          ) : sortedMovies.length === 0 ? (
-            <EmptyState
-              icon={<NoResultsIllustration />}
-              title="No movies found"
-              description="Try another title or adjust your filters."
-              action={
-                hasActiveFilters ? (
-                  <Button variant="secondary" onClick={clearFilters}>
-                    Clear filters
-                  </Button>
-                ) : undefined
-              }
-            />
-          ) : (
-            <>
-              <MovieGrid columns={5}>
-                {sortedMovies.map((movie) => (
-                  <MovieCard key={movie.id} movie={movie} />
-                ))}
-              </MovieGrid>
-              <Pagination
-                page={page}
-                totalPages={totalPages}
-                onPageChange={setPage}
-                className="mt-10"
+        <div ref={resultsRef} className="scroll-mt-24">
+          <Section
+            title="Results"
+            subtitle={
+              hasSearched && !loading && !error && sortedMovies.length > 0
+                ? `${totalResults.toLocaleString()} ${totalResults === 1 ? "result" : "results"} found`
+                : undefined
+            }
+          >
+            {!hasSearched ? (
+              <EmptyState
+                icon={<NoResultsIllustration />}
+                title="Search to begin"
+                description="Type a movie title above or choose one of the popular searches to get started."
               />
-            </>
-          )}
-        </Section>
+            ) : loading ? (
+              <MovieGridSkeleton columns={5} count={10} />
+            ) : error ? (
+              <ErrorState
+                title="Unable to load search results"
+                description="We could not fetch the search results. Please try again."
+                onRetry={refetch}
+              />
+            ) : sortedMovies.length === 0 ? (
+              <EmptyState
+                icon={<NoResultsIllustration />}
+                title="No movies found"
+                description="Try another title or adjust your filters."
+                action={
+                  hasActiveFilters ? (
+                    <Button variant="secondary" onClick={clearFilters}>
+                      Clear filters
+                    </Button>
+                  ) : undefined
+                }
+              />
+            ) : (
+              <>
+                <MovieGrid columns={5}>
+                  {sortedMovies.map((movie) => (
+                    <MovieCard key={movie.id} movie={movie} />
+                  ))}
+                </MovieGrid>
+                <Pagination
+                  page={page}
+                  totalPages={totalPages}
+                  onPageChange={setPage}
+                  className="mt-10"
+                />
+              </>
+            )}
+          </Section>
+        </div>
       )}
     </div>
   );
