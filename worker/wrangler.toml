@@ -1,0 +1,6 @@
+name = "react-movie-search-concierge"
+main = "src/index.ts"
+compatibility_date = "2024-12-30"
+
+[vars]
+ENVIRONMENT = "production"

@@ -4,3 +4,7 @@ dist
 .env
 .env.local
 *.local
+.dev.vars
+.wrangler
+worker/node_modules
+worker/.wrangler
