@@ -47,7 +47,7 @@ const BACKDROP_SIZE = 'original';
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/';
 
 /** Small, bounded candidate set returned to the frontend (6–10 movies). */
-const RESULT_LIMIT = 8;
+export const RESULT_LIMIT = 8;
 
 const DISCOVER_SORT_VALUES: readonly DiscoverSortBy[] = [
   'popularity.desc',

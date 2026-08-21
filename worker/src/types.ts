@@ -123,7 +123,9 @@ export type ToolErrorCode =
   | 'NOT_FOUND'
   | 'UPSTREAM_ERROR'
   | 'NETWORK_ERROR'
-  | 'CONFIG_ERROR';
+  | 'CONFIG_ERROR'
+  | 'TOOL_LOOP_EXCEEDED'
+  | 'MALFORMED_RESPONSE';
 
 export interface ToolError {
   code: ToolErrorCode;
@@ -131,3 +133,60 @@ export interface ToolError {
 }
 
 export type ToolResult<T> = { success: true; data: T } | { success: false; error: ToolError };
+
+// ---------------------------------------------------------------------------
+// Groq orchestration (Phase C)
+// ---------------------------------------------------------------------------
+
+/** Env bindings the Groq orchestration layer needs. */
+export interface GroqEnv {
+  GROQ_API_KEY?: string;
+  /** Optional override; falls back to the DEFAULT_GROQ_MODEL constant in groq.ts. */
+  GROQ_MODEL?: string;
+}
+
+/** Combined env the orchestration layer needs to call both Groq and TMDB. */
+export type ConciergeEnv = TmdbEnv & GroqEnv;
+
+/** The final shape returned by the /api/concierge endpoint on success. */
+export interface ConciergeResult {
+  commentary: string;
+  detectedMood?: string;
+  matchedGenres?: string[];
+  movies: Movie[];
+}
+
+// Minimal Groq (OpenAI-compatible) chat completion wire types — only the
+// fields this Worker actually reads/writes.
+
+export interface GroqToolCallFunction {
+  name: string;
+  arguments: string;
+}
+
+export interface GroqToolCall {
+  id: string;
+  type: 'function';
+  function: GroqToolCallFunction;
+}
+
+export interface GroqMessage {
+  role: 'system' | 'user' | 'assistant' | 'tool';
+  content: string | null;
+  tool_calls?: GroqToolCall[];
+  tool_call_id?: string;
+}
+
+export interface GroqChoice {
+  index: number;
+  message: GroqMessage;
+  finish_reason?: string;
+}
+
+export interface GroqChatCompletionResponse {
+  choices: GroqChoice[];
+}
+
+export interface GroqErrorBody {
+  error?: { message?: string };
+}

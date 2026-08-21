@@ -4,3 +4,7 @@ compatibility_date = "2024-12-30"
 
 [vars]
 ENVIRONMENT = "production"
+# Overridable without touching code. Falls back to DEFAULT_GROQ_MODEL in
+# worker/src/groq.ts if unset. GROQ_API_KEY and TMDB_API_KEY are secrets —
+# set them with `wrangler secret put`, not here.
+GROQ_MODEL = "openai/gpt-oss-20b"

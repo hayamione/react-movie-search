@@ -1,7 +1,31 @@
+import { runConcierge } from './groq';
+import type { ToolErrorCode } from './types';
+
 export interface Env {
   GROQ_API_KEY?: string;
   TMDB_API_KEY?: string;
+  /** Optional override for the Groq model id; defaults to DEFAULT_GROQ_MODEL in groq.ts. */
+  GROQ_MODEL?: string;
   ENVIRONMENT?: string;
+}
+
+/** Maps a structured tool/orchestration error code to an HTTP status. */
+function statusForErrorCode(code: ToolErrorCode): number {
+  switch (code) {
+    case 'VALIDATION_ERROR':
+      return 400;
+    case 'NOT_FOUND':
+      return 404;
+    case 'CONFIG_ERROR':
+      return 500;
+    case 'TOOL_LOOP_EXCEEDED':
+      return 504;
+    case 'NETWORK_ERROR':
+    case 'UPSTREAM_ERROR':
+    case 'MALFORMED_RESPONSE':
+    default:
+      return 502;
+  }
 }
 
 const ALLOWED_ORIGINS = [
@@ -161,11 +185,20 @@ export default {
       );
     }
 
-    // Phase A: Return temporary success confirmation
+    const result = await runConcierge(trimmedPrompt, env);
+
+    if (!result.success) {
+      return jsonResponse(
+        { success: false, error: result.error.message },
+        statusForErrorCode(result.error.code),
+        request
+      );
+    }
+
     return jsonResponse(
       {
         success: true,
-        message: 'Concierge endpoint is ready.',
+        data: result.data,
       },
       200,
       request
